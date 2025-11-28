@@ -1,0 +1,1174 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>小蛹勇闖英文冒險島</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Nunito:wght@400;600;700;800;900&display=swap');
+        
+        :root {
+            --pink: #FF6B9D;
+            --purple: #A855F7;
+            --blue: #38BDF8;
+            --green: #4ADE80;
+            --yellow: #FACC15;
+            --orange: #FB923C;
+            --white: #FFFFFF;
+            --cream: #FFF8E7;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Nunito', sans-serif;
+            background: linear-gradient(135deg, #FFF0F5 0%, #E0F2FE 50%, #F0FDF4 100%);
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        .floating-decorations {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
+        }
+
+        .float-item {
+            position: absolute;
+            animation: float 6s ease-in-out infinite;
+            opacity: 0.6;
+            font-size: 2rem;
+        }
+
+        .float-item:nth-child(1) { top: 10%; left: 5%; animation-delay: 0s; }
+        .float-item:nth-child(2) { top: 20%; right: 10%; animation-delay: 1s; }
+        .float-item:nth-child(3) { top: 60%; left: 8%; animation-delay: 2s; }
+        .float-item:nth-child(4) { top: 70%; right: 5%; animation-delay: 3s; }
+        .float-item:nth-child(5) { top: 40%; left: 3%; animation-delay: 4s; }
+        .float-item:nth-child(6) { top: 85%; left: 15%; animation-delay: 5s; }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto;
+            padding: 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        .header {
+            text-align: center;
+            padding: 30px 20px;
+            background: linear-gradient(145deg, var(--pink), var(--purple));
+            border-radius: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 10px 40px rgba(168, 85, 247, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255,255,255,0.2) 0%, transparent 70%);
+            animation: shimmer 3s infinite;
+        }
+
+        @keyframes shimmer {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        .header h1 {
+            font-size: 2.5rem;
+            font-weight: 900;
+            color: var(--white);
+            text-shadow: 3px 3px 0 rgba(0,0,0,0.1);
+            position: relative;
+        }
+
+        .header .mascot {
+            font-size: 4rem;
+            display: block;
+            margin-bottom: 10px;
+            animation: bounce 2s ease-in-out infinite;
+        }
+
+        @keyframes bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        .header .subtitle {
+            color: rgba(255,255,255,0.9);
+            font-size: 1.1rem;
+            margin-top: 10px;
+            font-weight: 600;
+        }
+
+        .player-card {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 20px 25px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+            display: flex;
+            align-items: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+
+        .player-avatar {
+            width: 70px;
+            height: 70px;
+            background: linear-gradient(135deg, var(--green), #22C55E);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2.5rem;
+            box-shadow: 0 5px 15px rgba(74, 222, 128, 0.4);
+        }
+
+        .player-info {
+            flex: 1;
+            min-width: 150px;
+        }
+
+        .player-name {
+            font-size: 1.4rem;
+            font-weight: 900;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .player-level {
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .player-stats {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .stat-box {
+            background: linear-gradient(135deg, #F0F9FF, #E0F2FE);
+            padding: 12px 18px;
+            border-radius: 15px;
+            text-align: center;
+            min-width: 80px;
+        }
+
+        .stat-box.gold {
+            background: linear-gradient(135deg, #FEF3C7, #FDE68A);
+        }
+
+        .stat-box.exp {
+            background: linear-gradient(135deg, #F0FDF4, #D1FAE5);
+        }
+
+        .stat-number {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #374151;
+        }
+
+        .stat-label {
+            font-size: 0.8rem;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .levels-section {
+            margin-bottom: 25px;
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            font-weight: 900;
+            color: #374151;
+            margin-bottom: 20px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .levels-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+        }
+
+        .level-card {
+            background: var(--white);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+            border: 3px solid transparent;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .level-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 5px;
+        }
+
+        .level-card.beginner::before { background: var(--green); }
+        .level-card.intermediate::before { background: var(--blue); }
+        .level-card.advanced::before { background: var(--orange); }
+        .level-card.expert::before { background: var(--purple); }
+        .level-card.final::before { background: linear-gradient(90deg, var(--pink), var(--purple), var(--blue)); }
+
+        .level-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.15);
+        }
+
+        .level-card.beginner:hover { border-color: var(--green); }
+        .level-card.intermediate:hover { border-color: var(--blue); }
+        .level-card.advanced:hover { border-color: var(--orange); }
+        .level-card.expert:hover { border-color: var(--purple); }
+        .level-card.final:hover { border-color: var(--pink); }
+
+        .level-card.locked {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+
+        .level-card.locked:hover {
+            transform: none;
+        }
+
+        .level-icon {
+            font-size: 3rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .level-name {
+            font-size: 1.1rem;
+            font-weight: 900;
+            color: #374151;
+            margin-bottom: 5px;
+        }
+
+        .level-desc {
+            font-size: 0.85rem;
+            color: #6B7280;
+        }
+
+        .level-progress {
+            margin-top: 10px;
+            height: 8px;
+            background: #E5E7EB;
+            border-radius: 10px;
+            overflow: hidden;
+        }
+
+        .level-progress-bar {
+            height: 100%;
+            border-radius: 10px;
+            transition: width 0.5s ease;
+        }
+
+        .beginner .level-progress-bar { background: var(--green); }
+        .intermediate .level-progress-bar { background: var(--blue); }
+        .advanced .level-progress-bar { background: var(--orange); }
+        .expert .level-progress-bar { background: var(--purple); }
+        .final .level-progress-bar { background: linear-gradient(90deg, var(--pink), var(--purple)); }
+
+        .lock-overlay {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255,255,255,0.7);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 2rem;
+            border-radius: 20px;
+        }
+
+        .game-area {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 30px;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.1);
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .game-title {
+            font-size: 1.5rem;
+            font-weight: 900;
+            color: #374151;
+        }
+
+        .game-info {
+            display: flex;
+            gap: 15px;
+            align-items: center;
+        }
+
+        .info-badge {
+            background: linear-gradient(135deg, var(--yellow), var(--orange));
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-weight: 700;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+
+        .hearts {
+            font-size: 1.5rem;
+            letter-spacing: 5px;
+        }
+
+        .question-area {
+            text-align: center;
+            padding: 30px;
+            background: linear-gradient(135deg, #F0F9FF, #FDF4FF);
+            border-radius: 25px;
+            margin-bottom: 25px;
+        }
+
+        .question-image {
+            font-size: 6rem;
+            margin-bottom: 15px;
+            animation: wiggle 2s ease-in-out infinite;
+        }
+
+        @keyframes wiggle {
+            0%, 100% { transform: rotate(-5deg); }
+            50% { transform: rotate(5deg); }
+        }
+
+        .question-text {
+            font-size: 1.3rem;
+            color: #374151;
+            font-weight: 700;
+            margin-bottom: 10px;
+        }
+
+        .question-hint {
+            font-size: 1rem;
+            color: #6B7280;
+        }
+
+        .answers-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .answer-btn {
+            padding: 20px;
+            font-size: 1.2rem;
+            font-weight: 700;
+            border: 3px solid #E5E7EB;
+            border-radius: 20px;
+            background: var(--white);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-family: 'Nunito', sans-serif;
+        }
+
+        .answer-btn:hover {
+            border-color: var(--purple);
+            transform: scale(1.02);
+            box-shadow: 0 5px 20px rgba(168, 85, 247, 0.2);
+        }
+
+        .answer-btn.correct {
+            background: linear-gradient(135deg, var(--green), #22C55E);
+            border-color: var(--green);
+            color: white;
+            animation: correctPulse 0.5s ease;
+        }
+
+        .answer-btn.wrong {
+            background: linear-gradient(135deg, #EF4444, #DC2626);
+            border-color: #EF4444;
+            color: white;
+            animation: wrongShake 0.5s ease;
+        }
+
+        @keyframes correctPulse {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+        }
+
+        @keyframes wrongShake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .back-btn {
+            background: linear-gradient(135deg, #6B7280, #4B5563);
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            border-radius: 15px;
+            font-size: 1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .back-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+        }
+
+        .result-screen {
+            text-align: center;
+            padding: 40px;
+        }
+
+        .result-icon {
+            font-size: 6rem;
+            margin-bottom: 20px;
+            animation: bounce 1s ease infinite;
+        }
+
+        .result-title {
+            font-size: 2rem;
+            font-weight: 900;
+            margin-bottom: 15px;
+        }
+
+        .result-title.success { color: var(--green); }
+        .result-title.fail { color: var(--orange); }
+
+        .result-stats {
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            margin: 25px 0;
+            flex-wrap: wrap;
+        }
+
+        .result-stat {
+            background: linear-gradient(135deg, #F0F9FF, #E0F2FE);
+            padding: 20px 30px;
+            border-radius: 20px;
+        }
+
+        .result-stat-number {
+            font-size: 2rem;
+            font-weight: 900;
+            color: var(--purple);
+        }
+
+        .result-stat-label {
+            font-size: 0.9rem;
+            color: #6B7280;
+            font-weight: 600;
+        }
+
+        .result-buttons {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .result-btn {
+            padding: 15px 35px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border: none;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .result-btn.primary {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+        }
+
+        .result-btn.secondary {
+            background: var(--white);
+            border: 3px solid var(--purple);
+            color: var(--purple);
+        }
+
+        .result-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+        }
+
+        .records-section {
+            background: var(--white);
+            border-radius: 25px;
+            padding: 25px;
+            box-shadow: 0 8px 30px rgba(0,0,0,0.08);
+        }
+
+        .records-list {
+            max-height: 300px;
+            overflow-y: auto;
+        }
+
+        .record-item {
+            display: flex;
+            align-items: center;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #F9FAFB, #F3F4F6);
+            gap: 15px;
+        }
+
+        .record-icon {
+            font-size: 2rem;
+        }
+
+        .record-info {
+            flex: 1;
+        }
+
+        .record-title {
+            font-weight: 700;
+            color: #374151;
+        }
+
+        .record-date {
+            font-size: 0.85rem;
+            color: #6B7280;
+        }
+
+        .record-score {
+            font-size: 1.2rem;
+            font-weight: 900;
+            color: var(--purple);
+        }
+
+        .empty-records {
+            text-align: center;
+            padding: 40px;
+            color: #9CA3AF;
+        }
+
+        .empty-records-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            padding: 20px;
+        }
+
+        .modal-overlay.hidden {
+            display: none;
+        }
+
+        .modal {
+            background: var(--white);
+            border-radius: 30px;
+            padding: 40px;
+            text-align: center;
+            max-width: 400px;
+            width: 100%;
+            animation: modalPop 0.3s ease;
+        }
+
+        @keyframes modalPop {
+            from { transform: scale(0.8); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-icon {
+            font-size: 4rem;
+            margin-bottom: 15px;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            color: #374151;
+            margin-bottom: 10px;
+        }
+
+        .modal-text {
+            color: #6B7280;
+            margin-bottom: 20px;
+        }
+
+        .modal-input {
+            width: 100%;
+            padding: 15px 20px;
+            border: 3px solid #E5E7EB;
+            border-radius: 15px;
+            font-size: 1.1rem;
+            font-family: 'Nunito', sans-serif;
+            text-align: center;
+            margin-bottom: 20px;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-input:focus {
+            outline: none;
+            border-color: var(--purple);
+        }
+
+        .modal-btn {
+            background: linear-gradient(135deg, var(--purple), var(--pink));
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            border-radius: 20px;
+            font-size: 1.1rem;
+            font-weight: 700;
+            cursor: pointer;
+            font-family: 'Nunito', sans-serif;
+            transition: all 0.3s ease;
+        }
+
+        .modal-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 8px 25px rgba(168, 85, 247, 0.4);
+        }
+
+        @media (max-width: 600px) {
+            .header h1 {
+                font-size: 1.8rem;
+            }
+            
+            .player-card {
+                flex-direction: column;
+                text-align: center;
+            }
+            
+            .answers-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .question-image {
+                font-size: 4rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="floating-decorations">
+        <span class="float-item">🦋</span>
+        <span class="float-item">🌴</span>
+        <span class="float-item">🐚</span>
+        <span class="float-item">🌺</span>
+        <span class="float-item">✨</span>
+        <span class="float-item">🏝️</span>
+    </div>
+
+    <div class="modal-overlay" id="nameModal">
+        <div class="modal">
+            <div class="modal-icon">🦋</div>
+            <h2 class="modal-title">歡迎來到冒險島！</h2>
+            <p class="modal-text">小蛹準備好了嗎？輸入名字開始冒險吧！</p>
+            <input type="text" class="modal-input" id="playerNameInput" placeholder="輸入你的名字..." maxlength="10">
+            <button class="modal-btn" onclick="setPlayerName()">出發冒險！🚀</button>
+        </div>
+    </div>
+
+    <div class="container">
+        <header class="header">
+            <span class="mascot">🦋</span>
+            <h1>小蛹勇闖英文冒險島</h1>
+            <p class="subtitle">小蛹加油！一起學英文，闖關拿金幣！</p>
+        </header>
+
+        <div class="player-card">
+            <div class="player-avatar">🐛</div>
+            <div class="player-info">
+                <div class="player-name" id="playerName">小蛹</div>
+                <div class="player-level">等級：<span id="playerLevel">1</span> 級小冒險家</div>
+            </div>
+            <div class="player-stats">
+                <div class="stat-box gold">
+                    <div class="stat-number" id="playerGold">0</div>
+                    <div class="stat-label">🪙 金幣</div>
+                </div>
+                <div class="stat-box exp">
+                    <div class="stat-number" id="playerExp">0</div>
+                    <div class="stat-label">⭐ 經驗值</div>
+                </div>
+            </div>
+        </div>
+
+        <div id="mainScreen">
+            <div class="levels-section">
+                <h2 class="section-title">🗺️ 選擇關卡</h2>
+                <div class="levels-grid">
+                    <div class="level-card beginner" onclick="startGame('beginner')">
+                        <span class="level-icon">🏝️</span>
+                        <div class="level-name">新手沙灘</div>
+                        <div class="level-desc">基礎單字練習</div>
+                        <div class="level-progress">
+                            <div class="level-progress-bar" id="progressBeginner" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="level-card intermediate" id="levelIntermediate" onclick="startGame('intermediate')">
+                        <span class="level-icon">🌴</span>
+                        <div class="level-name">椰林小徑</div>
+                        <div class="level-desc">進階單字挑戰</div>
+                        <div class="level-progress">
+                            <div class="level-progress-bar" id="progressIntermediate" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="level-card advanced" id="levelAdvanced" onclick="startGame('advanced')">
+                        <span class="level-icon">🌊</span>
+                        <div class="level-name">神秘瀑布</div>
+                        <div class="level-desc">困難單字試煉</div>
+                        <div class="level-progress">
+                            <div class="level-progress-bar" id="progressAdvanced" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="level-card expert" id="levelExpert" onclick="startGame('expert')">
+                        <span class="level-icon">🗿</span>
+                        <div class="level-name">古老神殿</div>
+                        <div class="level-desc">專家級考驗</div>
+                        <div class="level-progress">
+                            <div class="level-progress-bar" id="progressExpert" style="width: 0%"></div>
+                        </div>
+                    </div>
+                    <div class="level-card final" id="levelFinal" onclick="startGame('final')">
+                        <span class="level-icon">🦋</span>
+                        <div class="level-name">蝴蝶王座</div>
+                        <div class="level-desc">化蛹成蝶！</div>
+                        <div class="level-progress">
+                            <div class="level-progress-bar" id="progressFinal" style="width: 0%"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="records-section">
+                <h2 class="section-title">📚 學習紀錄</h2>
+                <div class="records-list" id="recordsList">
+                    <div class="empty-records">
+                        <div class="empty-records-icon">📝</div>
+                        <p>還沒有紀錄喔！快來挑戰吧！</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="game-area" id="gameArea">
+            <div class="game-header">
+                <h2 class="game-title" id="gameTitle">新手沙灘</h2>
+                <div class="game-info">
+                    <div class="info-badge">題目：<span id="questionNum">1</span>/10</div>
+                    <div class="hearts" id="hearts">❤️❤️❤️</div>
+                </div>
+            </div>
+            
+            <div class="question-area">
+                <div class="question-image" id="questionImage">🍎</div>
+                <div class="question-text" id="questionText">這個圖片的英文是什麼？</div>
+                <div class="question-hint" id="questionHint">提示：這是一種紅色的水果</div>
+            </div>
+
+            <div class="answers-grid" id="answersGrid">
+                <button class="answer-btn">Apple</button>
+                <button class="answer-btn">Banana</button>
+                <button class="answer-btn">Orange</button>
+                <button class="answer-btn">Grape</button>
+            </div>
+
+            <button class="back-btn" onclick="backToMain()">← 返回主畫面</button>
+        </div>
+
+        <div class="game-area" id="resultScreen" style="display: none;">
+            <div class="result-screen">
+                <div class="result-icon" id="resultIcon">🎉</div>
+                <h2 class="result-title success" id="resultTitle">小蛹好棒！</h2>
+                <p id="resultMessage">你離化蛹成蝶又近一步了！</p>
+                
+                <div class="result-stats">
+                    <div class="result-stat">
+                        <div class="result-stat-number" id="resultCorrect">0</div>
+                        <div class="result-stat-label">答對題數</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-number" id="resultGold">+0</div>
+                        <div class="result-stat-label">獲得金幣</div>
+                    </div>
+                    <div class="result-stat">
+                        <div class="result-stat-number" id="resultExp">+0</div>
+                        <div class="result-stat-label">獲得經驗</div>
+                    </div>
+                </div>
+
+                <div class="result-buttons">
+                    <button class="result-btn primary" onclick="restartGame()">再玩一次</button>
+                    <button class="result-btn secondary" onclick="backToMain()">返回主畫面</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const questions = {
+            beginner: [
+                { image: '🍎', answer: 'Apple', options: ['Apple', 'Banana', 'Orange', 'Grape'], hint: '這是一種紅色的水果' },
+                { image: '🐶', answer: 'Dog', options: ['Cat', 'Dog', 'Bird', 'Fish'], hint: '人類最好的朋友' },
+                { image: '📚', answer: 'Book', options: ['Pen', 'Book', 'Bag', 'Desk'], hint: '可以閱讀的東西' },
+                { image: '☀️', answer: 'Sun', options: ['Moon', 'Star', 'Sun', 'Cloud'], hint: '白天在天空發光' },
+                { image: '🐱', answer: 'Cat', options: ['Dog', 'Cat', 'Mouse', 'Lion'], hint: '喜歡說喵喵的動物' },
+                { image: '🌳', answer: 'Tree', options: ['Flower', 'Grass', 'Tree', 'Leaf'], hint: '很高很大，有樹葉' },
+                { image: '🏠', answer: 'House', options: ['School', 'House', 'Park', 'Store'], hint: '我們住的地方' },
+                { image: '✏️', answer: 'Pencil', options: ['Pen', 'Pencil', 'Ruler', 'Eraser'], hint: '用來寫字畫畫' },
+                { image: '🚗', answer: 'Car', options: ['Bus', 'Bike', 'Car', 'Train'], hint: '四個輪子的交通工具' },
+                { image: '🍌', answer: 'Banana', options: ['Apple', 'Banana', 'Mango', 'Peach'], hint: '黃色彎彎的水果' }
+            ],
+            intermediate: [
+                { image: '🦁', answer: 'Lion', options: ['Tiger', 'Lion', 'Bear', 'Wolf'], hint: '森林之王' },
+                { image: '🌈', answer: 'Rainbow', options: ['Cloud', 'Rain', 'Rainbow', 'Storm'], hint: '雨後天空的七彩橋' },
+                { image: '🦋', answer: 'Butterfly', options: ['Bee', 'Butterfly', 'Bird', 'Bat'], hint: '有美麗翅膀的昆蟲' },
+                { image: '🎸', answer: 'Guitar', options: ['Piano', 'Guitar', 'Drum', 'Violin'], hint: '用手彈的弦樂器' },
+                { image: '🏀', answer: 'Basketball', options: ['Football', 'Basketball', 'Baseball', 'Tennis'], hint: '用手投籃的球' },
+                { image: '🍕', answer: 'Pizza', options: ['Burger', 'Pizza', 'Pasta', 'Salad'], hint: '圓形的義大利美食' },
+                { image: '🐘', answer: 'Elephant', options: ['Elephant', 'Hippo', 'Rhino', 'Giraffe'], hint: '有長鼻子的大動物' },
+                { image: '🌙', answer: 'Moon', options: ['Sun', 'Star', 'Moon', 'Planet'], hint: '晚上會發光的圓球' },
+                { image: '🎂', answer: 'Cake', options: ['Bread', 'Cake', 'Cookie', 'Candy'], hint: '生日時會吃的甜點' },
+                { image: '✈️', answer: 'Airplane', options: ['Helicopter', 'Airplane', 'Rocket', 'Balloon'], hint: '在天空飛的交通工具' }
+            ],
+            advanced: [
+                { image: '🦈', answer: 'Shark', options: ['Whale', 'Dolphin', 'Shark', 'Octopus'], hint: '有尖牙的海洋獵手' },
+                { image: '🎻', answer: 'Violin', options: ['Guitar', 'Cello', 'Violin', 'Harp'], hint: '放在肩上用弓拉的樂器' },
+                { image: '🦉', answer: 'Owl', options: ['Eagle', 'Owl', 'Hawk', 'Parrot'], hint: '晚上才出來的大眼睛鳥' },
+                { image: '🌋', answer: 'Volcano', options: ['Mountain', 'Volcano', 'Island', 'Valley'], hint: '會噴火的山' },
+                { image: '🦊', answer: 'Fox', options: ['Wolf', 'Fox', 'Dog', 'Coyote'], hint: '聰明的橘色動物' },
+                { image: '🎺', answer: 'Trumpet', options: ['Flute', 'Trumpet', 'Trombone', 'Saxophone'], hint: '金色的吹奏樂器' },
+                { image: '🦅', answer: 'Eagle', options: ['Hawk', 'Eagle', 'Falcon', 'Vulture'], hint: '飛得很高的大鳥' },
+                { image: '🏝️', answer: 'Island', options: ['Beach', 'Island', 'Lake', 'River'], hint: '四周都是海水的陸地' },
+                { image: '🦜', answer: 'Parrot', options: ['Crow', 'Parrot', 'Sparrow', 'Pigeon'], hint: '會說話的彩色鳥' },
+                { image: '🎪', answer: 'Circus', options: ['Zoo', 'Circus', 'Theater', 'Museum'], hint: '有小丑和表演的地方' }
+            ],
+            expert: [
+                { image: '🦕', answer: 'Dinosaur', options: ['Dragon', 'Dinosaur', 'Lizard', 'Crocodile'], hint: '很久以前的大生物' },
+                { image: '🔭', answer: 'Telescope', options: ['Microscope', 'Telescope', 'Binoculars', 'Camera'], hint: '看遠處星星的工具' },
+                { image: '🦚', answer: 'Peacock', options: ['Pheasant', 'Peacock', 'Turkey', 'Ostrich'], hint: '有美麗尾巴的鳥' },
+                { image: '🎭', answer: 'Theater', options: ['Cinema', 'Theater', 'Concert', 'Opera'], hint: '看表演的地方' },
+                { image: '🦩', answer: 'Flamingo', options: ['Crane', 'Flamingo', 'Heron', 'Stork'], hint: '粉紅色單腳站立的鳥' },
+                { image: '🏺', answer: 'Vase', options: ['Pot', 'Vase', 'Jar', 'Bottle'], hint: '插花用的容器' },
+                { image: '🦔', answer: 'Hedgehog', options: ['Porcupine', 'Hedgehog', 'Beaver', 'Squirrel'], hint: '身上有刺的小動物' },
+                { image: '🎠', answer: 'Carousel', options: ['Ferris Wheel', 'Carousel', 'Roller Coaster', 'Swing'], hint: '遊樂園轉圈的木馬' },
+                { image: '🦢', answer: 'Swan', options: ['Duck', 'Goose', 'Swan', 'Pelican'], hint: '優雅的白色水鳥' },
+                { image: '🏛️', answer: 'Museum', options: ['Library', 'Museum', 'Gallery', 'Palace'], hint: '展示歷史文物的地方' }
+            ],
+            final: [
+                { image: '🦄', answer: 'Unicorn', options: ['Pegasus', 'Unicorn', 'Dragon', 'Phoenix'], hint: '額頭有角的神話馬' },
+                { image: '🎼', answer: 'Music', options: ['Melody', 'Music', 'Harmony', 'Rhythm'], hint: '用耳朵聽的藝術' },
+                { image: '🦋', answer: 'Butterfly', options: ['Moth', 'Butterfly', 'Dragonfly', 'Firefly'], hint: '小蛹變成的美麗昆蟲' },
+                { image: '🌌', answer: 'Galaxy', options: ['Universe', 'Galaxy', 'Star', 'Planet'], hint: '很多星星組成的大系統' },
+                { image: '🏆', answer: 'Trophy', options: ['Medal', 'Trophy', 'Prize', 'Award'], hint: '比賽贏了會得到的獎盃' },
+                { image: '🔬', answer: 'Microscope', options: ['Telescope', 'Microscope', 'Magnifier', 'Lens'], hint: '看很小東西的工具' },
+                { image: '🎨', answer: 'Palette', options: ['Canvas', 'Palette', 'Brush', 'Paint'], hint: '畫家放顏料的板子' },
+                { image: '🌊', answer: 'Ocean', options: ['Sea', 'Ocean', 'Lake', 'River'], hint: '最大的水域' },
+                { image: '🎭', answer: 'Drama', options: ['Comedy', 'Drama', 'Musical', 'Opera'], hint: '舞台上的表演藝術' },
+                { image: '👑', answer: 'Crown', options: ['Tiara', 'Crown', 'Hat', 'Helmet'], hint: '國王頭上戴的東西' }
+            ]
+        };
+
+        const levelNames = {
+            beginner: '新手沙灘',
+            intermediate: '椰林小徑',
+            advanced: '神秘瀑布',
+            expert: '古老神殿',
+            final: '蝴蝶王座'
+        };
+
+        const levelRequirements = {
+            beginner: 0,
+            intermediate: 50,
+            advanced: 150,
+            expert: 300,
+            final: 500
+        };
+
+        let gameState = {
+            playerName: '',
+            gold: 0,
+            exp: 0,
+            level: 1,
+            currentLevel: null,
+            currentQuestion: 0,
+            correctAnswers: 0,
+            lives: 3,
+            records: [],
+            levelProgress: {
+                beginner: 0,
+                intermediate: 0,
+                advanced: 0,
+                expert: 0,
+                final: 0
+            }
+        };
+
+        function loadGame() {
+            const saved = localStorage.getItem('xiaoyongEnglishGame');
+            if (saved) {
+                gameState = JSON.parse(saved);
+                document.getElementById('nameModal').classList.add('hidden');
+                updateUI();
+            }
+        }
+
+        function saveGame() {
+            localStorage.setItem('xiaoyongEnglishGame', JSON.stringify(gameState));
+        }
+
+        function setPlayerName() {
+            const name = document.getElementById('playerNameInput').value.trim();
+            if (name) {
+                gameState.playerName = name;
+                document.getElementById('nameModal').classList.add('hidden');
+                updateUI();
+                saveGame();
+            } else {
+                alert('請輸入你的名字喔！');
+            }
+        }
+
+        function updateUI() {
+            document.getElementById('playerName').textContent = gameState.playerName || '小蛹';
+            document.getElementById('playerGold').textContent = gameState.gold;
+            document.getElementById('playerExp').textContent = gameState.exp;
+            document.getElementById('playerLevel').textContent = gameState.level;
+            updateLevelLocks();
+            updateProgressBars();
+            updateRecords();
+        }
+
+        function updateLevelLocks() {
+            const levels = ['intermediate', 'advanced', 'expert', 'final'];
+            levels.forEach(level => {
+                const card = document.getElementById('level' + level.charAt(0).toUpperCase() + level.slice(1));
+                const existingLock = card.querySelector('.lock-overlay');
+                if (existingLock) {
+                    existingLock.remove();
+                }
+                
+                if (gameState.exp < levelRequirements[level]) {
+                    card.classList.add('locked');
+                    const lockDiv = document.createElement('div');
+                    lockDiv.className = 'lock-overlay';
+                    lockDiv.textContent = '🔒';
+                    card.appendChild(lockDiv);
+                } else {
+                    card.classList.remove('locked');
+                }
+            });
+        }
+
+        function updateProgressBars() {
+            Object.keys(gameState.levelProgress).forEach(level => {
+                const progress = gameState.levelProgress[level];
+                const bar = document.getElementById('progress' + level.charAt(0).toUpperCase() + level.slice(1));
+                if (bar) {
+                    bar.style.width = progress + '%';
+                }
+            });
+        }
+
+        function updateRecords() {
+            const recordsList = document.getElementById('recordsList');
+            if (gameState.records.length === 0) {
+                recordsList.innerHTML = '<div class="empty-records"><div class="empty-records-icon">📝</div><p>還沒有紀錄喔！快來挑戰吧！</p></div>';
+            } else {
+                recordsList.innerHTML = gameState.records.slice(-10).reverse().map(record => 
+                    '<div class="record-item"><div class="record-icon">' + (record.passed ? '🏆' : '📖') + '</div><div class="record-info"><div class="record-title">' + levelNames[record.level] + '</div><div class="record-date">' + record.date + '</div></div><div class="record-score">' + record.score + '/10</div></div>'
+                ).join('');
+            }
+        }
+
+        function startGame(level) {
+            if (gameState.exp < levelRequirements[level]) {
+                alert('需要 ' + levelRequirements[level] + ' 經驗值才能解鎖這個關卡！\n目前經驗值：' + gameState.exp);
+                return;
+            }
+
+            gameState.currentLevel = level;
+            gameState.currentQuestion = 0;
+            gameState.correctAnswers = 0;
+            gameState.lives = 3;
+
+            document.getElementById('mainScreen').style.display = 'none';
+            document.getElementById('gameArea').style.display = 'block';
+            document.getElementById('resultScreen').style.display = 'none';
+            document.getElementById('gameTitle').textContent = levelNames[level];
+
+            showQuestion();
+        }
+
+        function showQuestion() {
+            const level = gameState.currentLevel;
+            const questionData = questions[level][gameState.currentQuestion];
+
+            document.getElementById('questionNum').textContent = gameState.currentQuestion + 1;
+            document.getElementById('questionImage').textContent = questionData.image;
+            document.getElementById('questionHint').textContent = '提示：' + questionData.hint;
+            
+            let heartsStr = '';
+            for (let i = 0; i < gameState.lives; i++) heartsStr += '❤️';
+            for (let i = gameState.lives; i < 3; i++) heartsStr += '🖤';
+            document.getElementById('hearts').textContent = heartsStr;
+
+            const shuffledOptions = questionData.options.slice().sort(function() { return Math.random() - 0.5; });
+            const answersGrid = document.getElementById('answersGrid');
+            answersGrid.innerHTML = '';
+            shuffledOptions.forEach(function(option) {
+                const btn = document.createElement('button');
+                btn.className = 'answer-btn';
+                btn.textContent = option;
+                btn.onclick = function() { checkAnswer(option); };
+                answersGrid.appendChild(btn);
+            });
+        }
+
+        function checkAnswer(selected) {
+            const level = gameState.currentLevel;
+            const questionData = questions[level][gameState.currentQuestion];
+            const buttons = document.querySelectorAll('.answer-btn');
+            
+            buttons.forEach(function(btn) {
+                btn.disabled = true;
+                if (btn.textContent === questionData.answer) {
+                    btn.classList.add('correct');
+                }
+                if (btn.textContent === selected && selected !== questionData.answer) {
+                    btn.classList.add('wrong');
+                }
+            });
+
+            if (selected === questionData.answer) {
+                gameState.correctAnswers++;
+            } else {
+                gameState.lives--;
+            }
+
+            setTimeout(function() {
+                if (gameState.lives === 0 || gameState.currentQuestion >= 9) {
+                    showResult();
+                } else {
+                    gameState.currentQuestion++;
+                    showQuestion();
+                }
+            }, 1000);
+        }
+
+        function showResult() {
+            const passed = gameState.correctAnswers >= 6;
+            const goldEarned = gameState.correctAnswers * 10;
+            const expEarned = gameState.correctAnswers * 5;
+
+            gameState.gold += goldEarned;
+            gameState.exp += expEarned;
+            gameState.level = Math.floor(gameState.exp / 100) + 1;
+
+            const progressValue = Math.max(gameState.levelProgress[gameState.currentLevel], gameState.correctAnswers * 10);
+            gameState.levelProgress[gameState.currentLevel] = progressValue;
+
+            const now = new Date();
+            const dateStr = now.getFullYear() + '/' + (now.getMonth() + 1) + '/' + now.getDate();
+            gameState.records.push({
+                level: gameState.currentLevel,
+                score: gameState.correctAnswers,
+                passed: passed,
+                date: dateStr
+            });
+
+            saveGame();
+
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'block';
+
+            document.getElementById('resultIcon').textContent = passed ? '🦋' : '🐛';
+            document.getElementById('resultTitle').textContent = passed ? '小蛹好棒！' : '繼續加油！';
+            document.getElementById('resultTitle').className = 'result-title ' + (passed ? 'success' : 'fail');
+            document.getElementById('resultMessage').textContent = passed ? '你離化蛹成蝶又近一步了！' : '再練習一下，小蛹一定可以的！';
+            document.getElementById('resultCorrect').textContent = gameState.correctAnswers;
+            document.getElementById('resultGold').textContent = '+' + goldEarned;
+            document.getElementById('resultExp').textContent = '+' + expEarned;
+        }
+
+        function restartGame() {
+            startGame(gameState.currentLevel);
+        }
+
+        function backToMain() {
+            document.getElementById('mainScreen').style.display = 'block';
+            document.getElementById('gameArea').style.display = 'none';
+            document.getElementById('resultScreen').style.display = 'none';
+            updateUI();
+        }
+
+        loadGame();
+
+        document.getElementById('playerNameInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                setPlayerName();
+            }
+        });
+    </script>
+</body>
+</html>
