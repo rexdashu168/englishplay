@@ -314,6 +314,36 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .fc-close{position:absolute;top:13px;right:14px;background:var(--bg);border:none;width:28px;height:28px;border-radius:50%;font-size:13px;cursor:pointer;color:var(--slate);}
 
 .spacer{height:180px;}
+/* REPORT PAGE */
+.rpt-card{background:white;border-radius:16px;padding:14px;box-shadow:var(--shadow);display:flex;align-items:center;gap:12px;margin-bottom:10px;cursor:pointer;transition:transform .15s;}
+.rpt-card:active{transform:scale(.98);}
+.rpt-card-icon{width:48px;height:48px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-size:22px;flex-shrink:0;}
+.rpt-card-body{flex:1;min-width:0;}
+.rpt-card-title{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:2px;}
+.rpt-card-sub{font-size:11px;color:var(--muted);margin-bottom:6px;}
+.rpt-card-tags{display:flex;gap:4px;flex-wrap:wrap;}
+.rpt-tag{background:var(--teal-pale);color:var(--teal);border-radius:6px;padding:2px 7px;font-size:10px;font-weight:600;}
+.rpt-btn-learn{background:var(--teal);color:white;border:none;border-radius:8px;padding:5px 10px;font-size:11px;font-weight:700;cursor:pointer;white-space:nowrap;}
+.rpt-btn-speak{background:var(--bg);color:var(--slate);border:1px solid #e2e8f0;border-radius:8px;padding:5px 8px;font-size:12px;cursor:pointer;}
+/* Report detail overlay */
+.rd-tab{flex:1;padding:12px 4px;border:none;background:none;font-size:12px;font-weight:600;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;}
+.rd-tab.active{color:var(--teal);border-bottom-color:var(--teal);}
+.rd-panel{padding:16px;}
+.rd-panel.active{display:block;}
+/* Bilingual sentence card */
+.bi-card{background:white;border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;}
+.bi-en{font-size:15px;font-weight:600;color:var(--ink);line-height:1.6;margin-bottom:6px;}
+.bi-zh{font-size:13px;color:var(--slate);line-height:1.6;border-left:3px solid var(--teal);padding-left:10px;margin-bottom:8px;}
+.bi-acts{display:flex;gap:7px;}
+.bi-spk{background:var(--teal-pale);color:var(--teal);border:none;border-radius:8px;padding:5px 10px;font-size:12px;font-weight:600;cursor:pointer;}
+.bi-copy{background:var(--bg);color:var(--slate);border:1px solid #e2e8f0;border-radius:8px;padding:5px 10px;font-size:12px;cursor:pointer;}
+/* Speaking practice card */
+.sp-card{background:white;border-radius:14px;padding:14px;box-shadow:var(--shadow);margin-bottom:10px;}
+.sp-en-prompt{font-size:14px;font-weight:700;color:var(--ink);margin-bottom:4px;}
+.sp-zh-hint{font-size:12px;color:var(--muted);margin-bottom:10px;}
+.sp-acts{display:flex;gap:7px;flex-wrap:wrap;}
+.sp-listen{background:var(--teal);color:white;border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;}
+.sp-try{background:var(--orange-pale);color:var(--orange);border:none;border-radius:8px;padding:7px 12px;font-size:12px;font-weight:600;cursor:pointer;}
 
 /* ── Story tabs ── */
 .stab-content{display:none;}.stab-content.active{display:block;}
@@ -801,6 +831,11 @@ I also hope to contribute to the growth of the wealth management team, potential
     </div>
     <div style="padding:0 20px 20px;">
       <div class="uploaded-item" style="margin-bottom:10px;background:white;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);display:flex;align-items:center;gap:12px;">
+        <div style="font-size:24px;">🏭</div>
+        <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#1a1a1a;">GS: AirTAC Feb Revenue Report</div><div style="font-size:11px;color:#9aa5b4;margin-top:2px;">亞德客高盛研究報告 · 已提取 10 個關鍵詞</div></div>
+        <button onclick="openReader('airtac_gs')" style="background:#0ba899;color:white;border:none;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">學習</button>
+      </div>
+      <div class="uploaded-item" style="margin-bottom:10px;background:white;border-radius:16px;padding:16px;box-shadow:0 2px 12px rgba(0,0,0,.08);display:flex;align-items:center;gap:12px;">
         <div style="font-size:24px;">📊</div>
         <div style="flex:1;"><div style="font-size:14px;font-weight:700;color:#1a1a1a;">Phison Q4 2025 Research</div><div style="font-size:11px;color:#9aa5b4;margin-top:2px;">群聯電子研究報告 · 已提取 12 個關鍵詞</div></div>
         <button onclick="openReader('phison_report')" style="background:#0ba899;color:white;border:none;border-radius:10px;padding:7px 14px;font-size:12px;font-weight:700;cursor:pointer;">學習</button>
@@ -937,6 +972,130 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div style="height:10px;"></div>
 </div>
 
+<!-- ════════════════════════ PAGE 5: 研究報告 ════════════════════════ -->
+<div class="page" id="page-reports">
+  <div class="page-header">
+    <div class="page-title">📊 研究報告</div>
+    <button class="hbtn" style="background:var(--teal);color:white;font-size:12px;font-weight:700;padding:7px 14px;border-radius:12px;border:none;cursor:pointer;" onclick="openReportUpload()">+ 上傳報告</button>
+  </div>
+
+  <!-- Upload banner -->
+  <div style="margin:0 16px 16px;background:linear-gradient(135deg,#0f2d4a,#0ba899);border-radius:20px;padding:20px;">
+    <div style="font-size:14px;font-weight:800;color:white;margin-bottom:6px;">📄 上傳 PDF 研究報告</div>
+    <div style="font-size:12px;color:rgba(255,255,255,.8);line-height:1.6;margin-bottom:14px;">AI 自動分析英文報告 → 生成中英對照摘要、重點句口說練習</div>
+    <label id="rpt-upload-label" style="display:flex;align-items:center;justify-content:center;gap:8px;background:rgba(255,255,255,.2);border:1.5px dashed rgba(255,255,255,.5);border-radius:14px;padding:16px;cursor:pointer;">
+      <span style="font-size:22px;">📎</span>
+      <span style="color:white;font-size:13px;font-weight:700;" id="rptUploadText">點擊選擇 PDF 或貼入文字</span>
+      <input type="file" accept=".pdf,application/pdf" id="rptFileInput" style="display:none;" onchange="handleReportFile(this)">
+    </label>
+    <button onclick="openReportTextInput()" style="margin-top:10px;width:100%;background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.3);color:white;border-radius:12px;padding:10px;font-size:13px;font-weight:600;cursor:pointer;">✏️ 貼入英文報告文字</button>
+  </div>
+
+  <!-- Processing indicator -->
+  <div id="rptProcessing" style="display:none;margin:0 16px 16px;background:white;border-radius:16px;padding:20px;text-align:center;box-shadow:var(--shadow);">
+    <div style="font-size:28px;margin-bottom:10px;">🤖</div>
+    <div id="rptProcessStep" style="font-size:14px;font-weight:700;color:var(--ink);margin-bottom:6px;">AI 正在分析報告...</div>
+    <div style="background:#f1f5f9;border-radius:8px;height:6px;overflow:hidden;margin:12px 0;">
+      <div id="rptProgressBar" style="height:100%;background:var(--teal);border-radius:8px;width:10%;transition:width .4s ease;"></div>
+    </div>
+    <div style="font-size:11px;color:var(--muted);">正在提取關鍵詞彙與生成學習材料</div>
+  </div>
+
+  <!-- Reports list -->
+  <div style="padding:0 16px;">
+    <div style="font-size:13px;font-weight:700;color:var(--slate);margin-bottom:12px;">📚 已分析報告</div>
+
+    <!-- Pre-loaded report 0: AirTAC GS -->
+    <div class="rpt-card" onclick="openReader('airtac_gs')">
+      <div class="rpt-card-icon" style="background:linear-gradient(135deg,#0f2027,#2c5364);">🏭</div>
+      <div class="rpt-card-body">
+        <div class="rpt-card-title">GS: AirTAC Feb Revenue</div>
+        <div class="rpt-card-sub">亞德客氣動・B2・10個重點詞</div>
+        <div class="rpt-card-tags">
+          <span class="rpt-tag">氣動元件</span><span class="rpt-tag">中國製造</span><span class="rpt-tag">Goldman Sachs</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
+        <button onclick="event.stopPropagation();openReader('airtac_gs')" class="rpt-btn-learn">學習</button>
+        <button onclick="event.stopPropagation();speakReportKey('airtac_gs')" class="rpt-btn-speak">🔊</button>
+      </div>
+    </div>
+
+    <!-- Pre-loaded report 1 -->
+    <div class="rpt-card" onclick="openReportDetail('phison_rpt')">
+      <div class="rpt-card-icon" style="background:linear-gradient(135deg,#1e3a5f,#2563eb);">📊</div>
+      <div class="rpt-card-body">
+        <div class="rpt-card-title">Phison Q4 2025 Research</div>
+        <div class="rpt-card-sub">群聯電子・B2・12個重點句</div>
+        <div class="rpt-card-tags">
+          <span class="rpt-tag">半導體</span><span class="rpt-tag">NAND Flash</span><span class="rpt-tag">AI伺服器</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
+        <button onclick="event.stopPropagation();openReader('phison_report')" class="rpt-btn-learn">學習</button>
+        <button onclick="event.stopPropagation();speakReportKey('phison_report')" class="rpt-btn-speak">🔊</button>
+      </div>
+    </div>
+
+    <!-- Pre-loaded report 2 -->
+    <div class="rpt-card" onclick="openReportDetail('fed_rpt')">
+      <div class="rpt-card-icon" style="background:linear-gradient(135deg,#1a3a5c,#0ba899);">🏦</div>
+      <div class="rpt-card-body">
+        <div class="rpt-card-title">Fed Rate Decision Analysis</div>
+        <div class="rpt-card-sub">聯準會政策・B1・8個重點句</div>
+        <div class="rpt-card-tags">
+          <span class="rpt-tag">央行政策</span><span class="rpt-tag">降息</span><span class="rpt-tag">利率</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:5px;flex-shrink:0;">
+        <button onclick="event.stopPropagation();openReader('fed')" class="rpt-btn-learn">學習</button>
+        <button onclick="event.stopPropagation();speakReportKey('fed')" class="rpt-btn-speak">🔊</button>
+      </div>
+    </div>
+
+    <div id="rptList"></div>
+  </div>
+
+  <!-- Text input modal -->
+  <div id="rptTextModal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.5);z-index:700;align-items:flex-end;">
+    <div style="background:white;border-radius:24px 24px 0 0;padding:24px;width:100%;max-height:85vh;overflow-y:auto;">
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;">
+        <div style="font-size:16px;font-weight:800;">📋 貼入英文報告</div>
+        <button onclick="closeRptTextModal()" style="background:none;border:none;font-size:22px;cursor:pointer;color:var(--muted);">×</button>
+      </div>
+      <div style="font-size:12px;color:var(--muted);margin-bottom:10px;">將英文研究報告文字貼入，AI 將自動分析並生成學習材料</div>
+      <textarea id="rptTextArea" placeholder="Paste English research report content here..." style="width:100%;height:180px;border:1.5px solid #e2e8f0;border-radius:12px;padding:14px;font-size:13px;line-height:1.6;resize:none;font-family:inherit;"></textarea>
+      <input id="rptTitleInput" placeholder="報告名稱（選填）" style="width:100%;margin-top:10px;border:1.5px solid #e2e8f0;border-radius:12px;padding:12px 14px;font-size:13px;font-family:inherit;">
+      <button onclick="processReportText()" style="width:100%;margin-top:14px;background:var(--teal);color:white;border:none;border-radius:14px;padding:15px;font-size:15px;font-weight:700;cursor:pointer;">✨ AI 分析 → 生成學習材料</button>
+    </div>
+  </div>
+
+  <div style="height:20px;"></div>
+</div>
+
+<!-- ════ Report Detail Overlay ════ -->
+<div id="reportDetailOverlay" style="display:none;position:fixed;inset:0;background:white;z-index:350;overflow-y:auto;">
+  <div style="background:linear-gradient(135deg,#0f2d4a,#0ba899);padding:20px;padding-top:50px;position:relative;">
+    <button onclick="closeReportDetail()" style="position:absolute;top:16px;left:16px;background:rgba(255,255,255,.2);border:none;color:white;border-radius:50%;width:36px;height:36px;font-size:20px;cursor:pointer;">‹</button>
+    <div style="font-size:13px;color:rgba(255,255,255,.7);margin-bottom:4px;" id="rdLabel">研究報告</div>
+    <div style="font-size:20px;font-weight:800;color:white;margin-bottom:4px;" id="rdTitle"></div>
+    <div style="font-size:12px;color:rgba(255,255,255,.7);" id="rdMeta"></div>
+  </div>
+
+  <!-- Tabs -->
+  <div style="display:flex;border-bottom:2px solid #f1f5f9;background:white;position:sticky;top:0;z-index:10;">
+    <button class="rd-tab active" onclick="switchRdTab('summary',this)">摘要</button>
+    <button class="rd-tab" onclick="switchRdTab('bilingual',this)">中英對照</button>
+    <button class="rd-tab" onclick="switchRdTab('speaking',this)">口說練習</button>
+    <button class="rd-tab" onclick="switchRdTab('vocab',this)">關鍵詞彙</button>
+  </div>
+
+  <div id="rdPanel-summary"  class="rd-panel active"></div>
+  <div id="rdPanel-bilingual" class="rd-panel" style="display:none;"></div>
+  <div id="rdPanel-speaking"  class="rd-panel" style="display:none;"></div>
+  <div id="rdPanel-vocab"     class="rd-panel" style="display:none;"></div>
+</div>
+
 <!-- ════════════════════════ PAGE 4: 進度 & 收藏 ════════════════════════ -->
 <div class="page" id="page-progress">
   <div class="page-header"><div class="page-title">📋 我的進度</div></div>
@@ -1032,8 +1191,11 @@ I also hope to contribute to the growth of the wealth management team, potential
     <span class="nav-icon">💪</span>單字複習
     <span class="nav-badge" id="vocabBadge">19</span>
   </button>
+  <button class="nav-item" onclick="switchPage('reports',this)">
+    <span class="nav-icon">📊</span>研究報告
+  </button>
   <button class="nav-item" onclick="switchPage('progress',this)">
-    <span class="nav-icon">📋</span>我的收藏
+    <span class="nav-icon">📋</span>收藏
   </button>
 </nav>
 
@@ -1431,6 +1593,49 @@ const articles = {
 "My goal for every client relationship is..."
 
 把你真正的服務哲學用英文說出來！`,
+  },
+  airtac_gs:{
+    emoji:'🏭',grad:'linear-gradient(135deg,#0f2027,#203a43,#2c5364)',
+    title:'Goldman Sachs: AirTAC (1590.TW) February Revenue Analysis',level:'b2',lv:'B2',
+    hw:'revenue deceleration',hph:'/ˈrevənjuː diːˌseləˈreɪʃən/',hzh:'營收成長減速',
+    body:`<p><strong>Goldman Sachs · 4 March 2026 · Rating: Buy · 12m TP: NT$1,240</strong></p>
+    <p>On March 3rd, AirTAC reported February <span class="hl" data-w="revenue" data-ph="/ˈrevənjuː/" data-zh="營收" data-ex="AirTAC reported February revenue of Rmb475mn, down 10% YoY.">revenue</span> of Rmb475mn, <span class="hl" data-w="down 42% MoM" data-ph="/daʊn ˈfɔːti tuː pəˈsent ˌmʌnθ ɒn ˈmʌnθ/" data-zh="月減42%" data-ex="Revenue was down 42% MoM, largely reflecting 30% fewer working days.">down 42% MoM</span> and <span class="hl" data-w="down 10% YoY" data-ph="/daʊn ten pəˈsent ˌjɪər ɒn ˈjɪər/" data-zh="年減10%" data-ex="On a YoY basis, revenue declined 10% due to fewer working days and softer demand.">down 10% YoY</span>, which was 7% below <span class="hl" data-w="GSe" data-ph="/dʒiː es ˈestɪmɪt/" data-zh="高盛預估值" data-ex="The result came in 7% below GSe, primarily due to packaging weakness.">GSe</span> in RMB terms.</p>
+    <p>The <span class="hl" data-w="miss" data-ph="/mɪs/" data-zh="不如預期" data-ex="The revenue miss was primarily due to fewer working days and weak packaging sales.">miss</span> was primarily due to: (1) fewer <span class="hl" data-w="working days" data-ph="/ˈwɜːrkɪŋ deɪz/" data-zh="工作天數" data-ex="February had only 16 working days in 2026 vs. 18.5 days in 2025.">working days</span> YoY — 16 days in Feb 2026 vs. 18.5 days in Feb 2025; (2) <span class="hl" data-w="packaging revenue" data-ph="/ˈpækɪdʒɪŋ ˈrevənjuː/" data-zh="包裝業營收" data-ex="Packaging revenue declined close to 50% MoM, outpacing the actual reduction in working days.">packaging revenue</span> declined close to 50% MoM; and (3) weaker than expected <span class="hl" data-w="linear guide revenue" data-ph="/ˈlɪniər ɡaɪd ˈrevənjuː/" data-zh="線性滑軌營收" data-ex="Linear guide revenue of RMB78mn in Jan+Feb missed GSe of RMB96mn by 19%.">linear guide revenue</span> — RMB78mn in Jan+Feb missed GSe of RMB96mn by 19%.</p>
+    <p>In terms of <span class="hl" data-w="end-market segments" data-ph="/end ˈmɑːrkɪt ˈseɡmənts/" data-zh="終端市場分部" data-ex="Revenue growth by end-market segments showed battery sector outgrowing all others at +115% YoY.">end-market segments</span> for January and February combined, the <span class="hl" data-w="battery sector" data-ph="/ˈbætəri ˈsektər/" data-zh="電池產業" data-ex="The battery sector outgrew all other segments at +115% YoY, suggesting solid demand.">battery sector</span> continued to <span class="hl" data-w="outgrow" data-ph="/ˌaʊtˈɡrəʊ/" data-zh="超越…的成長率" data-ex="AirTAC expects its revenue to outgrow the China pneumatic market by 10ppt in 2026.">outgrow</span> all other sectors at +115% YoY.</p>
+    <p>For March 2026, Goldman Sachs estimates revenue will increase to Rmb802mn (+69% MoM, +4% YoY), driven by 50% more <span class="hl" data-w="working days" data-ph="/ˈwɜːrkɪŋ deɪz/" data-zh="工作天數" data-ex="March has approximately 50% more working days than February.">working days</span>. The company's <span class="hl" data-w="backlog" data-ph="/ˈbæklɒɡ/" data-zh="待交訂單、積壓訂單" data-ex="AirTAC's backlog value reached a historical high level at the end of February.">backlog</span> value reached a <span class="hl" data-w="historical high" data-ph="/hɪˈstɔːrɪkəl haɪ/" data-zh="歷史高點" data-ex="The backlog reaching a historical high suggests strong near-term order visibility.">historical high</span> at end of February, though potential <span class="hl" data-w="revisions" data-ph="/rɪˈvɪʒənz/" data-zh="（訂單）修正、調整" data-ex="The sizeable backlog may see potential revisions by end clients going forward.">revisions</span> by end clients remain a risk.</p>
+    <p><strong>Investment view:</strong> Goldman Sachs <span class="hl" data-w="reiterates" data-ph="/riːˈɪtəreɪts/" data-zh="重申（評等）" data-ex="Goldman Sachs reiterates its Buy rating, citing solid 2026 revenue guidance.">reiterates</span> its Buy rating. AirTAC is the 2nd-largest <span class="hl" data-w="pneumatic supplier" data-ph="/njuːˈmætɪk səˈplaɪər/" data-zh="氣動元件供應商" data-ex="AirTAC is the 2nd-largest pneumatic supplier in mainland China with 25% market share.">pneumatic supplier</span> in mainland China with 25% <span class="hl" data-w="market share" data-ph="/ˈmɑːrkɪt ʃeər/" data-zh="市場份額" data-ex="AirTAC's market share is expected to reach 29% in 2026E.">market share</span>. Key <span class="hl" data-w="downside risks" data-ph="/ˈdaʊnsaɪd rɪsks/" data-zh="下行風險" data-ex="Key downside risks include stronger competition and sharper-than-expected RMB depreciation.">downside risks</span> include stronger competition, <span class="hl" data-w="RMB depreciation" data-ph="/ˌɑːr em ˈbiː ˌdeprɪʃiˈeɪʃən/" data-zh="人民幣貶值" data-ex="Sharper-than-expected RMB depreciation would compress AirTAC's reported earnings.">RMB depreciation</span>, and a longer-than-expected <span class="hl" data-w="end-market demand downtrend" data-ph="/end ˈmɑːrkɪt dɪˈmɑːnd ˈdaʊntrend/" data-zh="終端需求下行趨勢" data-ex="A longer-than-expected end-market demand downtrend in China is the key risk to monitor.">end-market demand downtrend</span> in mainland China.</p>`,
+    vocab:[
+      {en:'revenue miss',ph:'/ˈrevənjuː mɪs/',zh:'營收不如預期'},
+      {en:'MoM / YoY',ph:'/mʌnθ ɒn mʌnθ / jɪər ɒn jɪər/',zh:'月增率 / 年增率'},
+      {en:'GSe (Goldman Sachs estimate)',ph:'/dʒiː es ˈestɪmɪt/',zh:'高盛預估值'},
+      {en:'backlog',ph:'/ˈbæklɒɡ/',zh:'待交訂單'},
+      {en:'working days',ph:'/ˈwɜːrkɪŋ deɪz/',zh:'工作天數（影響營收的關鍵變數）'},
+      {en:'end-market segment',ph:'/end ˈmɑːrkɪt ˈseɡmənt/',zh:'終端市場分部'},
+      {en:'downside risk',ph:'/ˈdaʊnsaɪd rɪsk/',zh:'下行風險'},
+      {en:'reiterate Buy',ph:'/riːˈɪtəreɪt baɪ/',zh:'重申買進評等'},
+      {en:'market share',ph:'/ˈmɑːrkɪt ʃeər/',zh:'市場份額'},
+      {en:'pneumatic supplier',ph:'/njuːˈmætɪk səˈplaɪər/',zh:'氣動元件供應商'},
+    ],
+    quiz:[
+      {q:'AirTAC 2月營收與高盛預估相比？',opts:['超出7%','符合預期','低於7%','低於15%'],ans:2},
+      {q:'2月營收月減42%的主要原因是？',opts:['需求大幅下滑','工作天數減少30%','競爭對手搶單','匯率損失'],ans:1},
+      {q:'1+2月合計，哪個終端市場年增率最高？',opts:['汽車 +20%','機床 +35%','電池 +115%','紡織 +25%'],ans:2},
+      {q:'Goldman Sachs 對亞德客的評等是？',opts:['Sell','Neutral','Buy','Not Rated'],ans:2},
+      {q:'"backlog" 在研究報告中的意思是？',opts:['存貨過多','待交訂單積壓','客戶退貨','財務虧損'],ans:1},
+    ],
+    grammar:[
+      {tag:'研究報告數字表達',title:'下跌/成長的標準寫法',desc:'"down 42% MoM"、"up 69% MoM"、"+115% YoY" — 外資報告的數字一律用 up/down 或 +/- 表示方向，後接百分比再接時間維度（MoM月、QoQ季、YoY年）。這是讀懂所有外資報告的基本句型。',ex:'Revenue was up 15% YoY, driven by strong demand from the battery sector.'},
+      {tag:'重申評等句型',title:'We reiterate our Buy rating（重申評等）',desc:'"We reiterate our Buy rating on AirTAC" — reiterate 是外資報告維持評等時的標準用詞。相對地，若調升用 upgrade to Buy，調降用 downgrade to Sell/Neutral。',ex:'We reiterate our Buy rating with an unchanged 12-month price target of NT$1,240.'},
+      {tag:'風險描述句型',title:'sharper-than-expected（副詞強化比較）',desc:'"sharper-than-expected RMB depreciation"、"longer-than-expected downtrend" — 外資報告描述風險時常用「比預期更…」的複合修飾語，表達偏離基本假設的程度。',ex:'A steeper-than-expected decline in smartphone demand would pressure our estimates.'},
+    ],
+    speaking:`用英文練習解讀這份報告的核心邏輯：
+
+"AirTAC's February revenue missed Goldman Sachs estimates because..."
+"The key reason I find this report useful for understanding the market is..."
+"In terms of end-market exposure, the most interesting segment to watch is battery, because..."
+"Goldman Sachs maintains a Buy rating despite the miss because..."
+
+試著用你的方式，把這份報告的重點濃縮成60秒的英文口頭報告！`,
   },
   phison_report:{
     emoji:'📊',grad:'linear-gradient(135deg,#0f172a,#1e40af)',
