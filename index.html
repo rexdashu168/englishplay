@@ -381,7 +381,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
     <div class="db-ph">/jiːld spred/</div>
     <div class="db-zh">殖利率利差 · 收益率差</div>
     <div class="db-ex">"The <strong>yield spread</strong> between investment-grade and high-yield bonds widened sharply, signaling rising credit risk in the market."</div>
-    <button class="db-play" onclick="showWP('yield spread','/jiːld spred/','殖利率利差','The yield spread between investment-grade and high-yield bonds widened sharply.')">▶</button>
+    <button class="db-play" onclick="speakText('yield spread')" title="朗讀">🔊</button>
   </div>
 
   <!-- Daily Quiz -->
@@ -401,37 +401,37 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
   <!-- 常用財經片語 -->
   <div class="sec-header"><span class="sec-title">💬 常用財經片語</span><button class="sec-more">全部 ›</button></div>
   <div class="hscroll">
-    <div class="phrase-card" onclick="openReader('phrase_bullish')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_bullish">
       <span class="pc-tag" style="background:var(--green-pale);color:#0d7a5f;">市場情緒</span>
       <div class="pc-en">bullish / bearish</div>
       <div class="pc-zh">看多 / 看空</div>
       <div class="pc-ex">"Investors remain <em>bullish</em> on tech stocks despite recent volatility."</div>
     </div>
-    <div class="phrase-card" onclick="openReader('phrase_liquidity')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_liquidity">
       <span class="pc-tag" style="background:var(--blue-pale);color:var(--blue);">資金流動</span>
       <div class="pc-en">liquidity crunch</div>
       <div class="pc-zh">流動性緊縮</div>
       <div class="pc-ex">"The sudden <em>liquidity crunch</em> forced several funds to sell assets quickly."</div>
     </div>
-    <div class="phrase-card" onclick="openReader('phrase_hedge')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_hedge">
       <span class="pc-tag" style="background:var(--purple-pale);color:var(--purple);">風險管理</span>
       <div class="pc-en">hedge against risk</div>
       <div class="pc-zh">對沖風險</div>
       <div class="pc-ex">"CBs are used to <em>hedge against</em> equity market downturns."</div>
     </div>
-    <div class="phrase-card" onclick="openReader('phrase_leverage')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_leverage">
       <span class="pc-tag" style="background:var(--red-pale);color:var(--red);">槓桿操作</span>
       <div class="pc-en">leverage ratio</div>
       <div class="pc-zh">槓桿比率</div>
       <div class="pc-ex">"High <em>leverage ratios</em> amplify both gains and losses."</div>
     </div>
-    <div class="phrase-card" onclick="openReader('phrase_margin')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_margin">
       <span class="pc-tag" style="background:var(--orange-pale);color:var(--orange);">融資信用</span>
       <div class="pc-en">margin call</div>
       <div class="pc-zh">追繳保證金</div>
       <div class="pc-ex">"A falling market triggered <em>margin calls</em>, forcing investors to sell."</div>
     </div>
-    <div class="phrase-card" onclick="openReader('phrase_arbitrage')">
+    <div class="phrase-card" data-action="openReader" data-arg="phrase_arbitrage">
       <span class="pc-tag" style="background:var(--gold-pale);color:var(--gold);">套利策略</span>
       <div class="pc-en">arbitrage opportunity</div>
       <div class="pc-zh">套利機會</div>
@@ -443,7 +443,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
   <div class="sec-header"><span class="sec-title">🔥 熱門文章</span><button class="sec-more">更多 ›</button></div>
   <div class="news-feed">
 
-    <div class="acard" onclick="openReader('fed')">
+    <div class="acard" data-action="openReader" data-arg="fed">
       <div class="acard-img" style="background:linear-gradient(135deg,#1a3a5c,#2563eb);">🏦
         <div class="acard-lock">🔓</div><div class="acard-hot">HOT</div>
       </div>
@@ -460,7 +460,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('cb')">
+    <div class="acard" data-action="openReader" data-arg="cb">
       <div class="acard-img" style="background:linear-gradient(135deg,#7c2d12,#ea580c);">📋
         <div class="acard-lock">🔓</div>
       </div>
@@ -477,7 +477,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('etf')">
+    <div class="acard" data-action="openReader" data-arg="etf">
       <div class="acard-img" style="background:linear-gradient(135deg,#065f46,#059669);">📊
         <div class="acard-lock">🔓</div>
       </div>
@@ -494,7 +494,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('wealth')">
+    <div class="acard" data-action="openReader" data-arg="wealth">
       <div class="acard-img" style="background:linear-gradient(135deg,#4c1d95,#7c3aed);">💎
         <div class="acard-lock">🔓</div>
       </div>
@@ -511,7 +511,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('risk')">
+    <div class="acard" data-action="openReader" data-arg="risk">
       <div class="acard-img" style="background:linear-gradient(135deg,#0c4a6e,#0284c7);">⚖️
         <div class="acard-lock">🔓</div>
       </div>
@@ -528,7 +528,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('margin')">
+    <div class="acard" data-action="openReader" data-arg="margin">
       <div class="acard-img" style="background:linear-gradient(135deg,#7f1d1d,#dc2626);">⚠️
         <div class="acard-lock">🔓</div>
       </div>
@@ -545,7 +545,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
       </div>
     </div>
 
-    <div class="acard" onclick="openReader('semiconductor')">
+    <div class="acard" data-action="openReader" data-arg="semiconductor">
       <div class="acard-img" style="background:linear-gradient(135deg,#0f172a,#334155);">💻
         <div class="acard-lock">🔓</div>
       </div>
@@ -1081,6 +1081,7 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div class="wp-zh" id="wpZh"></div>
   <div class="wp-ex" id="wpEx"></div>
   <div class="wp-acts">
+    <button class="wp-btn" onclick="speakText(document.getElementById('wpWord').textContent)" style="background:#e0f7f5;color:#0ba899;border:1px solid #0ba899;">🔊 發音</button>
     <button class="wp-btn wp-save" onclick="saveW()">+ 加入單字卡</button>
     <button class="wp-btn wp-close" onclick="closeWP()">關閉</button>
   </div>
@@ -1761,15 +1762,14 @@ function openReader(key){
       <textarea class="wa-input" placeholder="在這裡輸入你的英文回答..."></textarea>
     </div>`;
 
-  // Bind highlights
-  setTimeout(()=>{
-    document.querySelectorAll('#rBody .hl').forEach(el=>{
-      el.addEventListener('click',function(e){
-        e.stopPropagation();
-        showWP(this.dataset.w,this.dataset.ph,this.dataset.zh,this.dataset.ex);
-      });
+  // Bind highlights via delegation (more reliable on iOS)
+  const rBodyEl = document.getElementById('rBody');
+  if(rBodyEl){
+    rBodyEl.addEventListener('click',function(e){
+      const hl = e.target.closest('.hl');
+      if(hl){ e.stopPropagation(); showWP(hl.dataset.w,hl.dataset.ph,hl.dataset.zh,hl.dataset.ex); }
     });
-  },50);
+  }
 
   switchRTab('quiz', document.querySelector('.rtab'));
   document.getElementById('readerOverlay').classList.add('show');
@@ -2020,96 +2020,111 @@ function finishImport(text){
 }
 
 // ══════════════════════════════════════════
-// TTS ENGINE (Web Speech API)
+// TTS ENGINE - iOS Safari Robust Version
 // ══════════════════════════════════════════
-let ttsUtterance = null;
 let ttsPlaying = false;
+let ttsWatchdog = null;
 
-function speakText(text, rate, onEnd) {
-  if (!window.speechSynthesis) {
-    showToast('此瀏覽器不支援語音功能');
-    return;
-  }
-  // Cancel any ongoing speech
-  window.speechSynthesis.cancel();
-  
-  const clean = text.replace(/<[^>]+>/g, '').replace(/[🔊🎤]/g, '').trim();
+function speakText(text, rate) {
+  const synth = window.speechSynthesis;
+  if (!synth) { showToast('此裝置不支援語音功能'); return; }
+
+  // iOS requires cancel before new utterance
+  synth.cancel();
+  clearTimeout(ttsWatchdog);
+
+  // Strip HTML tags
+  const clean = String(text).replace(/<[^>]+>/g, '').replace(/[🔊🎤✅❌]/g, '').trim();
   if (!clean) return;
-  
-  ttsUtterance = new SpeechSynthesisUtterance(clean);
-  ttsUtterance.lang = 'en-US';
-  ttsUtterance.rate = rate || 0.85;
-  ttsUtterance.pitch = 1.0;
-  ttsUtterance.volume = 1.0;
-  
-  // Prefer a natural English voice
-  const voices = window.speechSynthesis.getVoices();
-  const preferred = voices.find(v => v.lang === 'en-US' && v.name.includes('Samantha'))
-    || voices.find(v => v.lang === 'en-US' && !v.name.includes('Google'))
-    || voices.find(v => v.lang.startsWith('en'));
-  if (preferred) ttsUtterance.voice = preferred;
-  
-  ttsUtterance.onend = () => {
-    ttsPlaying = false;
-    updateAudioBtns(false);
-    if (onEnd) onEnd();
-  };
-  ttsUtterance.onerror = () => {
-    ttsPlaying = false;
-    updateAudioBtns(false);
-  };
-  
-  ttsPlaying = true;
-  updateAudioBtns(true);
-  window.speechSynthesis.speak(ttsUtterance);
+
+  const utter = new SpeechSynthesisUtterance(clean);
+  utter.lang = 'en-US';
+  utter.rate = rate || 0.85;
+  utter.pitch = 1.0;
+  utter.volume = 1.0;
+
+  // Pick best voice
+  function pickVoice() {
+    const voices = synth.getVoices();
+    return voices.find(v => v.lang === 'en-US' && /Samantha|Karen|Moira/.test(v.name))
+        || voices.find(v => v.lang === 'en-US')
+        || voices.find(v => v.lang.startsWith('en'))
+        || null;
+  }
+  const voice = pickVoice();
+  if (voice) utter.voice = voice;
+
+  utter.onstart  = () => { ttsPlaying = true;  updateAudioUI(true); };
+  utter.onend    = () => { ttsPlaying = false; updateAudioUI(false); clearTimeout(ttsWatchdog); };
+  utter.onerror  = () => { ttsPlaying = false; updateAudioUI(false); clearTimeout(ttsWatchdog); };
+
+  synth.speak(utter);
+
+  // iOS Safari watchdog: sometimes onend never fires
+  const estMs = Math.max(3000, clean.split(' ').length * 600);
+  ttsWatchdog = setTimeout(() => {
+    if (ttsPlaying) { ttsPlaying = false; updateAudioUI(false); }
+  }, estMs + 2000);
 }
 
 function stopSpeech() {
-  window.speechSynthesis.cancel();
+  window.speechSynthesis && window.speechSynthesis.cancel();
   ttsPlaying = false;
-  updateAudioBtns(false);
+  updateAudioUI(false);
+  clearTimeout(ttsWatchdog);
 }
 
-function updateAudioBtns(playing) {
+function updateAudioUI(playing) {
   const chapBtn = document.getElementById('chapPlayBtn');
-  const rbBtn = document.getElementById('rbAudioBtn');
-  if (chapBtn) chapBtn.textContent = playing ? '⏹ 停止' : '▶ 朗讀';
-  if (rbBtn) rbBtn.textContent = playing ? '⏹ 停止朗讀' : '🔊 朗讀全文';
-  // Update chapBtn onclick
-  if (chapBtn) chapBtn.onclick = playing ? stopSpeech : speakArticle;
-  if (rbBtn) rbBtn.onclick = playing ? stopSpeech : speakArticle;
+  const rbBtn   = document.getElementById('rbAudioBtn');
+  if (chapBtn) { chapBtn.textContent = playing ? '⏹ 停止' : '▶ 朗讀'; }
+  if (rbBtn)   { rbBtn.textContent   = playing ? '⏹ 停止' : '🔊 朗讀全文'; }
 }
 
 function speakArticle() {
   if (ttsPlaying) { stopSpeech(); return; }
   const a = articles[currentKey];
   if (!a) return;
-  // Build clean text: title + body text
-  const titleText = a.title;
   const bodyEl = document.getElementById('rBody');
-  const bodyText = bodyEl ? bodyEl.innerText : '';
-  const fullText = titleText + '. ' + bodyText;
-  speakText(fullText, 0.8);
-  showToast('🔊 開始朗讀全文...');
+  const txt = a.title + '. ' + (bodyEl ? bodyEl.innerText : '');
+  speakText(txt, 0.8);
+  showToast('🔊 開始朗讀...');
 }
 
-// Daily word banner speak
-function speakDailyWord() {
-  speakText('yield spread');
-}
-
-// Speak word in flashcard
 function speakFC() {
   if (!fcCards || fcIdx >= fcCards.length) return;
-  const w = fcCards[fcIdx].w || fcCards[fcIdx].en;
-  if (w) speakText(w);
+  const w = fcCards[fcIdx].w || fcCards[fcIdx].en || '';
+  if (w) speakText(w, 0.75);
 }
 
-// Ensure voices are loaded (iOS needs this)
-if (window.speechSynthesis) {
-  window.speechSynthesis.getVoices();
-  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
-}
+// Pre-load voices on iOS (must be triggered by user gesture initially)
+(function() {
+  const synth = window.speechSynthesis;
+  if (!synth) return;
+  synth.getVoices(); // initial call
+  if (synth.onvoiceschanged !== undefined) {
+    synth.onvoiceschanged = () => synth.getVoices();
+  }
+})();
+
+// ══════════════════════════════════════════
+// DELEGATE CLICK HANDLER (iOS div fix)
+// ══════════════════════════════════════════
+document.addEventListener('DOMContentLoaded', function() {
+  document.body.addEventListener('click', function(e) {
+    const t = e.target.closest('[data-action]');
+    if (!t) return;
+    const action = t.dataset.action;
+    const arg    = t.dataset.arg || '';
+    if (action === 'openReader')   openReader(arg);
+    if (action === 'filterLv')     filterLv(t);
+    if (action === 'switchPage')   switchPage(arg, t);
+    if (action === 'speak')        speakText(arg);
+    if (action === 'openFC')       openFC(arg);
+    if (action === 'speakArticle') speakArticle();
+    if (action === 'stopSpeech')   stopSpeech();
+  });
+});
 </script>
 
 <!-- AI IMPORT MODAL -->
