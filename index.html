@@ -2137,6 +2137,82 @@ function speakFC() {
 // ══════════════════════════════════════════
 // DELEGATE CLICK HANDLER (iOS div fix)
 // ══════════════════════════════════════════
+// ══════════════════════════════════════════
+// SELECT-TO-SPEAK ENGINE
+// ══════════════════════════════════════════
+let selToolbarVisible = false;
+
+function getSelectionText() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return '';
+  return sel.toString().trim();
+}
+
+function getSelectionRect() {
+  const sel = window.getSelection();
+  if (!sel || sel.rangeCount === 0) return null;
+  return sel.getRangeAt(0).getBoundingClientRect();
+}
+
+function showSelToolbar(x, y) {
+  const tb = document.getElementById('selToolbar');
+  if (!tb) return;
+  tb.style.display = 'flex';
+  // Position above the selection
+  const tbW = 200;
+  const left = Math.min(Math.max(x, tbW/2 + 8), window.innerWidth - tbW/2 - 8);
+  tb.style.left = left + 'px';
+  tb.style.top  = (y - 54) + 'px';
+  selToolbarVisible = true;
+}
+
+function hideSelToolbar() {
+  const tb = document.getElementById('selToolbar');
+  if (tb) tb.style.display = 'none';
+  selToolbarVisible = false;
+}
+
+function speakSelected() {
+  const txt = getSelectionText();
+  if (!txt) return;
+  // Only speak English content (filter out pure Chinese)
+  const hasEnglish = /[a-zA-Z]/.test(txt);
+  if (!hasEnglish) { showToast('請選取英文字詞'); return; }
+  speakText(txt, ttsRate);
+  hideSelToolbar();
+  showToast('🔊 ' + txt.substring(0,30) + (txt.length>30?'...':''));
+}
+
+function lookupSelected() {
+  const txt = getSelectionText();
+  if (!txt || !/[a-zA-Z]/.test(txt)) return;
+  // Show as word popup with basic info
+  const clean = txt.toLowerCase().replace(/[^a-z\s'-]/g,'').trim();
+  showWP(clean, '', '點擊 🔊 發音', '"' + txt + '" — 已選取的詞彙');
+  hideSelToolbar();
+}
+
+// Listen for text selection across the whole document
+document.addEventListener('selectionchange', function() {
+  const txt = getSelectionText();
+  if (!txt || txt.length < 1 || !/[a-zA-Z]/.test(txt)) {
+    // Small delay before hiding so button clicks register
+    setTimeout(() => {
+      if (!getSelectionText()) hideSelToolbar();
+    }, 200);
+    return;
+  }
+  // Get position
+  const rect = getSelectionRect();
+  if (!rect || rect.width === 0) return;
+  const x = rect.left + rect.width / 2 + window.scrollX;
+  const y = rect.top + window.scrollY;
+  showSelToolbar(x, y);
+});
+
+// Hide toolbar on scroll
+document.addEventListener('scroll', hideSelToolbar, true);
+
 document.addEventListener('DOMContentLoaded', function() {
   document.body.addEventListener('click', function(e) {
     const t = e.target.closest('[data-action]');
@@ -2176,6 +2252,28 @@ document.addEventListener('DOMContentLoaded', function() {
 
 <!-- TOAST -->
 <div class="toast-msg" id="toastMsg"></div>
+
+<!-- Selection Toolbar -->
+<div id="selToolbar" style="
+  display:none;
+  position:fixed;
+  z-index:800;
+  background:#1a1a2e;
+  border-radius:12px;
+  padding:6px 4px;
+  box-shadow:0 4px 20px rgba(0,0,0,0.35);
+  display:none;
+  flex-direction:row;
+  align-items:center;
+  gap:2px;
+  transform:translateX(-50%);
+">
+  <button id="selSpeak" style="background:none;border:none;color:#fff;font-size:13px;font-weight:600;padding:6px 10px;cursor:pointer;border-radius:8px;white-space:nowrap;" onclick="speakSelected()">🔊 發音</button>
+  <div style="width:1px;height:20px;background:rgba(255,255,255,.2);"></div>
+  <button id="selLookup" style="background:none;border:none;color:#a5f3fc;font-size:13px;font-weight:600;padding:6px 10px;cursor:pointer;border-radius:8px;white-space:nowrap;" onclick="lookupSelected()">📖 查詢</button>
+  <div style="width:1px;height:20px;background:rgba(255,255,255,.2);"></div>
+  <button style="background:none;border:none;color:rgba(255,255,255,.5);font-size:16px;padding:4px 8px;cursor:pointer;" onclick="hideSelToolbar()">×</button>
+</div>
 
 </body>
 </html>
