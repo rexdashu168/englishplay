@@ -196,7 +196,11 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .reader-body-wrap{padding:20px 20px 0;}
 .r-title{font-size:21px;font-weight:800;color:var(--ink);letter-spacing:-.3px;}
 .r-meta{display:flex;gap:8px;align-items:center;margin:9px 0 18px;}
-.r-chap{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
+.r-chap{display:flex;align-items:center;gap:8px;margin-bottom:12px;flex-wrap:wrap;}
+.spd-row{display:flex;gap:5px;}
+.spd-btn{background:#f1f5f9;border:1.5px solid #e2e8f0;border-radius:16px;padding:4px 10px;font-size:12px;font-weight:600;color:#64748b;cursor:pointer;transition:all .15s;}
+.spd-btn.spd-active{background:#e0f7f5;border-color:#0ba899;color:#0ba899;}
+.spd-btn:active{transform:scale(.95);}
 .r-chap-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
 .chap-play{background:var(--teal);border:none;border-radius:20px;color:white;font-size:12px;font-weight:600;padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:4px;}
 .r-text{font-size:18px;line-height:2;color:var(--ink);}
@@ -1047,7 +1051,15 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div class="reader-body-wrap">
     <div class="r-title" id="rTitle"></div>
     <div class="r-meta" id="rMeta"></div>
-    <div class="r-chap"><span class="r-chap-lbl">章節 1</span><button class="chap-play" id="chapPlayBtn" onclick="speakArticle()">▶ 朗讀</button></div>
+    <div class="r-chap">
+      <span class="r-chap-lbl">章節 1</span>
+      <button class="chap-play" id="chapPlayBtn" onclick="speakArticle()">▶ 朗讀</button>
+      <div class="spd-row">
+        <button class="spd-btn" onclick="setTTSRate(0.6,this)">🐢 慢</button>
+        <button class="spd-btn spd-active" onclick="setTTSRate(0.75,this)">🚶 適中</button>
+        <button class="spd-btn" onclick="setTTSRate(1.0,this)">🚀 快</button>
+      </div>
+    </div>
     <div class="r-text" id="rBody"></div>
   </div>
 
@@ -2024,6 +2036,7 @@ function finishImport(text){
 // ══════════════════════════════════════════
 let ttsPlaying = false;
 let ttsWatchdog = null;
+let ttsRate = 0.75; // 預設：慢速
 
 function speakText(text, rate) {
   const synth = window.speechSynthesis;
@@ -2039,7 +2052,7 @@ function speakText(text, rate) {
 
   const utter = new SpeechSynthesisUtterance(clean);
   utter.lang = 'en-US';
-  utter.rate = rate || 0.85;
+  utter.rate = rate || ttsRate;
   utter.pitch = 1.0;
   utter.volume = 1.0;
 
@@ -2074,6 +2087,14 @@ function stopSpeech() {
   clearTimeout(ttsWatchdog);
 }
 
+function setTTSRate(rate, btn) {
+  ttsRate = rate;
+  document.querySelectorAll('.spd-btn').forEach(b => b.classList.remove('spd-active'));
+  if (btn) btn.classList.add('spd-active');
+  // If currently playing, restart with new rate
+  if (ttsPlaying) { stopSpeech(); speakArticle(); }
+}
+
 function updateAudioUI(playing) {
   const chapBtn = document.getElementById('chapPlayBtn');
   const rbBtn   = document.getElementById('rbAudioBtn');
@@ -2093,7 +2114,7 @@ function speakArticle() {
   if (!a) return;
   const bodyEl = document.getElementById('rBody');
   const txt = a.title + '. ' + (bodyEl ? bodyEl.innerText : '');
-  speakText(txt, 0.8);
+  speakText(txt, ttsRate);
   showToast('🔊 開始朗讀...');
 }
 
