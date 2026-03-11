@@ -1091,7 +1091,10 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div class="fc-card">
     <button class="fc-close" onclick="closeFC()">✕</button>
     <div class="fc-prog" id="fcProg"></div>
-    <div class="fc-word" id="fcWord"></div>
+    <div style="display:flex;align-items:center;justify-content:center;gap:10px;">
+      <div class="fc-word" id="fcWord"></div>
+      <button onclick="speakFC()" style="background:none;border:none;font-size:20px;cursor:pointer;color:#0ba899;" title="發音">🔊</button>
+    </div>
     <div class="fc-ph" id="fcPh"></div>
     <div class="fc-ans" id="fcAns">
       <div class="fc-zh" id="fcZh"></div>
@@ -1731,7 +1734,7 @@ function openReader(key){
   let vh='';
   (a.vocab||[]).forEach((v,i)=>{
     const saved = savedWords.has(v.en);
-    vh+=`<div class="rv-card"><div class="rv-num">${i+1}</div><div class="rv-body"><div class="rv-en">${v.en}</div><div class="rv-ph">${v.ph}</div><div class="rv-zh">${v.zh}</div></div><button class="rv-save ${saved?'saved':''}" onclick="toggleSave(this,'${v.en}')">${saved?'✓':'+'}</button></div>`;
+    vh+=`<div class="rv-card"><div class="rv-num">${i+1}</div><div class="rv-body"><div class="rv-en">${v.en}</div><div class="rv-ph">${v.ph}</div><div class="rv-zh">${v.zh}</div></div><div class="rv-btns"><button class="rv-spk" onclick="speakText('${v.en.replace(/'/g,"\'")}')">🔊</button><button class="rv-save ${saved?'saved':''}" onclick="toggleSave(this,'${v.en}')">${saved?'✓':'+'}</button></div></div>`;
   });
   document.getElementById('vocabWrap').innerHTML = vh;
 
@@ -1747,7 +1750,7 @@ function openReader(key){
     <div class="speak-prompt">
       <div class="sp-label">🎤 口說任務</div>
       <div class="sp-title">${(a.speaking||'').split('\n')[0]}</div>
-      <div class="sp-hint" style="white-space:pre-line;margin-top:7px;">${(a.speaking||'').split('\n').slice(1).join('\n')}</div>
+      <div class="sp-hint" style="white-space:pre-line;margin-top:7px;">${(a.speaking||'').split('\n').slice(1).filter(l=>l.trim()).map(l=>`<div class="sp-sentence">${l} <button class="sp-spk-btn" onclick="speakText(this.parentElement.textContent.replace('🔊','').trim())">🔊</button></div>`).join('')}</div>
     </div>
     <div class="mic-wrap">
       <button class="mic-circle" id="micBtn" onclick="toggleMic()">🎙️</button>
@@ -2014,6 +2017,98 @@ function finishImport(text){
   // Switch to news tab
   var newsBtn = document.querySelector('.nav-item');
   if(newsBtn){ switchPage('news', newsBtn); }
+}
+
+// ══════════════════════════════════════════
+// TTS ENGINE (Web Speech API)
+// ══════════════════════════════════════════
+let ttsUtterance = null;
+let ttsPlaying = false;
+
+function speakText(text, rate, onEnd) {
+  if (!window.speechSynthesis) {
+    showToast('此瀏覽器不支援語音功能');
+    return;
+  }
+  // Cancel any ongoing speech
+  window.speechSynthesis.cancel();
+  
+  const clean = text.replace(/<[^>]+>/g, '').replace(/[🔊🎤]/g, '').trim();
+  if (!clean) return;
+  
+  ttsUtterance = new SpeechSynthesisUtterance(clean);
+  ttsUtterance.lang = 'en-US';
+  ttsUtterance.rate = rate || 0.85;
+  ttsUtterance.pitch = 1.0;
+  ttsUtterance.volume = 1.0;
+  
+  // Prefer a natural English voice
+  const voices = window.speechSynthesis.getVoices();
+  const preferred = voices.find(v => v.lang === 'en-US' && v.name.includes('Samantha'))
+    || voices.find(v => v.lang === 'en-US' && !v.name.includes('Google'))
+    || voices.find(v => v.lang.startsWith('en'));
+  if (preferred) ttsUtterance.voice = preferred;
+  
+  ttsUtterance.onend = () => {
+    ttsPlaying = false;
+    updateAudioBtns(false);
+    if (onEnd) onEnd();
+  };
+  ttsUtterance.onerror = () => {
+    ttsPlaying = false;
+    updateAudioBtns(false);
+  };
+  
+  ttsPlaying = true;
+  updateAudioBtns(true);
+  window.speechSynthesis.speak(ttsUtterance);
+}
+
+function stopSpeech() {
+  window.speechSynthesis.cancel();
+  ttsPlaying = false;
+  updateAudioBtns(false);
+}
+
+function updateAudioBtns(playing) {
+  const chapBtn = document.getElementById('chapPlayBtn');
+  const rbBtn = document.getElementById('rbAudioBtn');
+  if (chapBtn) chapBtn.textContent = playing ? '⏹ 停止' : '▶ 朗讀';
+  if (rbBtn) rbBtn.textContent = playing ? '⏹ 停止朗讀' : '🔊 朗讀全文';
+  // Update chapBtn onclick
+  if (chapBtn) chapBtn.onclick = playing ? stopSpeech : speakArticle;
+  if (rbBtn) rbBtn.onclick = playing ? stopSpeech : speakArticle;
+}
+
+function speakArticle() {
+  if (ttsPlaying) { stopSpeech(); return; }
+  const a = articles[currentKey];
+  if (!a) return;
+  // Build clean text: title + body text
+  const titleText = a.title;
+  const bodyEl = document.getElementById('rBody');
+  const bodyText = bodyEl ? bodyEl.innerText : '';
+  const fullText = titleText + '. ' + bodyText;
+  speakText(fullText, 0.8);
+  showToast('🔊 開始朗讀全文...');
+}
+
+// Daily word banner speak
+function speakDailyWord() {
+  speakText('yield spread');
+}
+
+// Speak word in flashcard
+function speakFC() {
+  if (!fcCards || fcIdx >= fcCards.length) return;
+  const w = fcCards[fcIdx].w || fcCards[fcIdx].en;
+  if (w) speakText(w);
+}
+
+// Ensure voices are loaded (iOS needs this)
+if (window.speechSynthesis) {
+  window.speechSynthesis.getVoices();
+  window.speechSynthesis.onvoiceschanged = () => window.speechSynthesis.getVoices();
 }
 </script>
 
