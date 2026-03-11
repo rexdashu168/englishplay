@@ -381,7 +381,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
     <div class="db-ph">/jiːld spred/</div>
     <div class="db-zh">殖利率利差 · 收益率差</div>
     <div class="db-ex">"The <strong>yield spread</strong> between investment-grade and high-yield bonds widened sharply, signaling rising credit risk in the market."</div>
-    <button class="db-play">▶</button>
+    <button class="db-play" onclick="showWP('yield spread','/jiːld spred/','殖利率利差','The yield spread between investment-grade and high-yield bonds widened sharply.')">▶</button>
   </div>
 
   <!-- Daily Quiz -->
@@ -1477,6 +1477,133 @@ const articles = {
 
 試著用英文說出你每天在做的市場判斷！`,
   },
+  phrase_liquidity:{
+    emoji:'💧',grad:'linear-gradient(135deg,#0d3d56,#0284c7)',
+    title:'財經片語精解：Liquidity Crunch 流動性緊縮',level:'b1',lv:'B1',
+    hw:'liquidity crunch',hph:'/lɪˈkwɪdɪti krʌntʃ/',hzh:'流動性緊縮',
+    body:`<p>A <span class="hl" data-w="liquidity crunch" data-ph="/lɪˈkwɪdɪti krʌntʃ/" data-zh="流動性緊縮" data-ex="A sudden liquidity crunch forced several funds to sell assets quickly.">liquidity crunch</span> occurs when there is a sudden shortage of cash or easily convertible assets in the market.</p>
+    <p>During a liquidity crunch, even <span class="hl" data-w="solvent" data-ph="/ˈsɒlvənt/" data-zh="有償債能力的" data-ex="A solvent company may still face a liquidity crisis if cash is tied up.">solvent</span> companies struggle to meet short-term obligations. <span class="hl" data-w="bid-ask spreads" data-ph="/bɪd æsk spredz/" data-zh="買賣價差" data-ex="Bid-ask spreads widen significantly during periods of market stress.">Bid-ask spreads</span> widen and market depth shrinks.</p>`,
+    vocab:[
+      {en:'liquidity crunch',ph:'/lɪˈkwɪdɪti krʌntʃ/',zh:'流動性緊縮'},
+      {en:'solvent',ph:'/ˈsɒlvənt/',zh:'有償債能力的'},
+      {en:'bid-ask spread',ph:'/bɪd æsk spred/',zh:'買賣價差'},
+      {en:'market depth',ph:'/ˈmɑːrkɪt depθ/',zh:'市場深度'},
+    ],
+    quiz:[
+      {q:'Liquidity crunch 最主要的特徵是？',opts:['股價上漲','現金或流動資產突然短缺','利率下降','外資流入'],ans:1},
+      {q:'"solvent" 的意思是？',opts:['破產的','有償債能力的','高風險的','過度槓桿的'],ans:1},
+      {q:'流動性緊縮時 bid-ask spread 會？',opts:['縮小','維持不變','擴大','消失'],ans:2},
+    ],
+    grammar:[
+      {tag:'even + 形容詞',title:'even solvent companies（even 強調意外）',desc:'"even solvent companies struggle" — even 表示「連...都」，強調程度之深。在財經分析中常用來說明連最穩健的機構都受影響。',ex:'Even blue-chip stocks were not immune to the selloff.'},
+    ],
+    speaking:`練習用英文描述流動性危機：
+"During the 2008 crisis, a liquidity crunch caused..."
+"The key difference between a liquidity problem and insolvency is..."
+"One way to prepare for a liquidity crunch is..."`,
+  },
+  phrase_hedge:{
+    emoji:'🛡️',grad:'linear-gradient(135deg,#1a3a5c,#4c1d95)',
+    title:'財經片語精解：Hedge Against Risk 對沖風險',level:'b1',lv:'B1',
+    hw:'hedge against risk',hph:'/hedʒ əˈɡenst rɪsk/',hzh:'對沖風險',
+    body:`<p>To <span class="hl" data-w="hedge" data-ph="/hedʒ/" data-zh="對沖、避險" data-ex="Investors use options to hedge against downside risk in their portfolio.">hedge</span> means to take a position that offsets potential losses from another investment. <span class="hl" data-w="convertible bonds" data-ph="/kənˈvɜːrtɪbəl bɒndz/" data-zh="可轉換公司債" data-ex="Convertible bonds naturally hedge against equity downturns through their bond floor.">Convertible bonds</span> are a natural hedging tool — their bond floor provides downside protection.</p>
+    <p>Common hedging instruments include <span class="hl" data-w="put options" data-ph="/pʊt ˈɒpʃənz/" data-zh="賣權、認售選擇權" data-ex="Buying put options is a classic way to hedge a long equity position.">put options</span>, <span class="hl" data-w="short selling" data-ph="/ʃɔːrt ˈselɪŋ/" data-zh="放空" data-ex="Short selling allows investors to hedge by profiting from falling prices.">short selling</span>, and <span class="hl" data-w="inverse ETFs" data-ph="/ˈɪnvɜːrs iː tiː efs/" data-zh="反向ETF" data-ex="Inverse ETFs rise in value when the underlying index falls.">inverse ETFs</span>.</p>`,
+    vocab:[
+      {en:'hedge',ph:'/hedʒ/',zh:'對沖、避險'},
+      {en:'put option',ph:'/pʊt ˈɒpʃən/',zh:'賣權'},
+      {en:'short selling',ph:'/ʃɔːrt ˈselɪŋ/',zh:'放空'},
+      {en:'inverse ETF',ph:'/ˈɪnvɜːrs iː tiː ef/',zh:'反向ETF'},
+    ],
+    quiz:[
+      {q:'To "hedge" in investing means？',opts:['追求最大報酬','對沖抵消潛在損失','短期交易','加大槓桿'],ans:1},
+      {q:'可轉債的天然避險功能來自？',opts:['高股息','債券底價保護','高流動性','低費用率'],ans:1},
+      {q:'"Put option" 是什麼？',opts:['買入權利','賣出權利','做多期貨','放空股票'],ans:1},
+    ],
+    grammar:[
+      {tag:'定語子句',title:'instruments include... and...',desc:'"Common hedging instruments include put options, short selling, and inverse ETFs." — include 後接名詞列舉是財經報告最常見的句型，Oxford comma 是標準寫法。',ex:'Key risks include market volatility, regulatory changes, and liquidity constraints.'},
+    ],
+    speaking:`練習解釋可轉債的避險功能：
+"I recommend convertible bonds partly because they hedge against..."
+"The bond floor provides protection when..."
+"Compared to pure equity, a CB investor benefits from..."`,
+  },
+  phrase_leverage:{
+    emoji:'⚖️',grad:'linear-gradient(135deg,#7f1d1d,#b45309)',
+    title:'財經片語精解：Leverage Ratio 槓桿比率',level:'b2',lv:'B2',
+    hw:'leverage ratio',hph:'/ˈlevərɪdʒ ˈreɪʃioʊ/',hzh:'槓桿比率',
+    body:`<p>The <span class="hl" data-w="leverage ratio" data-ph="/ˈlevərɪdʒ ˈreɪʃioʊ/" data-zh="槓桿比率" data-ex="A high leverage ratio amplifies both gains and losses proportionally.">leverage ratio</span> measures how much <span class="hl" data-w="debt" data-ph="/det/" data-zh="負債" data-ex="Total debt relative to equity determines financial risk exposure.">debt</span> is used relative to <span class="hl" data-w="equity" data-ph="/ˈekwɪti/" data-zh="股東權益" data-ex="A company with high equity relative to debt is considered conservatively financed.">equity</span>. High leverage <span class="hl" data-w="amplifies" data-ph="/ˈæmplɪfaɪz/" data-zh="放大（動詞）" data-ex="Leverage amplifies gains during bull markets but accelerates losses in downturns.">amplifies</span> both gains and losses.</p>
+    <p>In margin trading, leverage means borrowing to increase <span class="hl" data-w="exposure" data-ph="/ɪkˈspəʊʒər/" data-zh="曝險部位" data-ex="Increasing exposure through leverage raises both potential return and risk.">exposure</span>. When a position moves against you, a <span class="hl" data-w="margin call" data-ph="/ˈmɑːrdʒɪn kɔːl/" data-zh="追繳保證金" data-ex="A margin call forces the investor to deposit more funds or liquidate positions.">margin call</span> forces liquidation.</p>`,
+    vocab:[
+      {en:'leverage ratio',ph:'/ˈlevərɪdʒ ˈreɪʃioʊ/',zh:'槓桿比率'},
+      {en:'amplify',ph:'/ˈæmplɪfaɪ/',zh:'放大'},
+      {en:'exposure',ph:'/ɪkˈspəʊʒər/',zh:'曝險部位'},
+      {en:'margin call',ph:'/ˈmɑːrdʒɪn kɔːl/',zh:'追繳保證金'},
+    ],
+    quiz:[
+      {q:'高槓桿比率的主要影響是？',opts:['降低風險','放大獲利和虧損','提高流動性','保護本金'],ans:1},
+      {q:'"margin call" 發生時投資人需要做什麼？',opts:['立刻獲利了結','補充保證金或強制平倉','買入更多部位','申請展延'],ans:1},
+      {q:'"exposure" 在投資中指？',opts:['曝光率','曝險部位','費用率','報酬率'],ans:1},
+    ],
+    grammar:[
+      {tag:'副詞修飾',title:'proportionally / accelerates（精確動詞）',desc:'財經英文偏好精確動詞：amplify（放大）、accelerate（加速）、compress（壓縮）、erode（侵蝕）。避免使用 increase/decrease，改用這些專業動詞能提升報告質量。',ex:'Rising rates erode bond prices and compress equity valuations simultaneously.'},
+    ],
+    speaking:`練習向客戶說明槓桿風險：
+"Leverage is like a double-edged sword because..."
+"I always advise clients to keep their leverage ratio..."
+"The biggest mistake I see is when investors..."
+
+把你的融資慘痛經驗用英文說出來！`,
+  },
+  phrase_margin:{
+    emoji:'⚠️',grad:'linear-gradient(135deg,#7f1d1d,#dc2626)',
+    title:'財經片語精解：Margin Call 追繳保證金',level:'b1',lv:'B1',
+    hw:'margin call',hph:'/ˈmɑːrdʒɪn kɔːl/',hzh:'追繳保證金',
+    body:`<p>A <span class="hl" data-w="margin call" data-ph="/ˈmɑːrdʒɪn kɔːl/" data-zh="追繳保證金通知" data-ex="Receiving a margin call is one of the most stressful events for a leveraged investor.">margin call</span> is triggered when the value of a <span class="hl" data-w="margin account" data-ph="/ˈmɑːrdʒɪn əˈkaʊnt/" data-zh="融資帳戶" data-ex="A margin account allows investors to borrow money to purchase securities.">margin account</span> falls below the broker's required <span class="hl" data-w="maintenance margin" data-ph="/ˈmeɪntənəns ˈmɑːrdʒɪn/" data-zh="維持保證金" data-ex="If equity falls below maintenance margin, a margin call is issued immediately.">maintenance margin</span>.</p>
+    <p>The investor must either deposit additional funds or <span class="hl" data-w="liquidate" data-ph="/ˈlɪkwɪdeɪt/" data-zh="強制平倉" data-ex="Failure to meet a margin call results in the broker liquidating positions at market price.">liquidate</span> positions. In fast-moving markets, <span class="hl" data-w="forced selling" data-ph="/fɔːrst ˈselɪŋ/" data-zh="強制拋售" data-ex="Forced selling cascades can push prices dramatically lower in volatile markets.">forced selling</span> cascades can dramatically accelerate price declines.</p>`,
+    vocab:[
+      {en:'margin call',ph:'/ˈmɑːrdʒɪn kɔːl/',zh:'追繳保證金'},
+      {en:'maintenance margin',ph:'/ˈmeɪntənəns ˈmɑːrdʒɪn/',zh:'維持保證金'},
+      {en:'liquidate',ph:'/ˈlɪkwɪdeɪt/',zh:'強制平倉'},
+      {en:'forced selling',ph:'/fɔːrst ˈselɪŋ/',zh:'強制拋售'},
+    ],
+    quiz:[
+      {q:'Margin call 在什麼情況下被觸發？',opts:['帳戶獲利超過目標','帳戶淨值低於維持保證金','市場大漲','利率下降'],ans:1},
+      {q:'"Liquidate" 在這裡的意思是？',opts:['增加部位','補充資金','強制平倉','申請停損'],ans:2},
+      {q:'Forced selling cascades 主要的市場影響是？',opts:['推升股價','維持穩定','加速股價下跌','提高流動性'],ans:2},
+    ],
+    grammar:[
+      {tag:'被動語態',title:'is triggered when...（被動語態描述機制）',desc:'"A margin call is triggered when..." — 描述金融機制時常用被動語態，強調「這是系統規則」而非人為決定。is triggered / is issued / is required 是常見句型。',ex:'A stop-loss order is automatically triggered when the price falls below the set level.'},
+    ],
+    speaking:`分享你對融資的真實看法：
+"I learned from experience that margin calls happen when you least expect them..."
+"My personal rule on leverage is..."
+"The psychological impact of a margin call is..."`,
+  },
+  phrase_arbitrage:{
+    emoji:'🔄',grad:'linear-gradient(135deg,#064e3b,#059669)',
+    title:'財經片語精解：Arbitrage Opportunity 套利機會',level:'b2',lv:'B2',
+    hw:'arbitrage',hph:'/ˈɑːrbɪtrɑːʒ/',hzh:'套利',
+    body:`<p><span class="hl" data-w="Arbitrage" data-ph="/ˈɑːrbɪtrɑːʒ/" data-zh="套利" data-ex="Pure arbitrage involves simultaneously buying and selling to profit from price differences.">Arbitrage</span> is the simultaneous purchase and sale of an asset in different markets to profit from a <span class="hl" data-w="price discrepancy" data-ph="/praɪs dɪˈskrepənsi/" data-zh="價差" data-ex="Traders exploit price discrepancies between the cash and futures markets.">price discrepancy</span>.</p>
+    <p>In convertible bond markets, <span class="hl" data-w="CB arbitrage" data-ph="/siː biː ˈɑːrbɪtrɑːʒ/" data-zh="可轉債套利" data-ex="CB arbitrage involves going long the bond while shorting the underlying equity.">CB arbitrage</span> involves going <span class="hl" data-w="long the CB" data-ph="/lɒŋ ðə siː biː/" data-zh="做多可轉債" data-ex="Arbitrageurs go long the CB and short the stock to capture the conversion premium spread.">long the CB</span> while <span class="hl" data-w="shorting the underlying stock" data-ph="/ˈʃɔːrtɪŋ ðə ˈʌndərlaɪɪŋ stɒk/" data-zh="放空正股" data-ex="Shorting the underlying stock neutralizes equity exposure in CB arbitrage strategies.">shorting the underlying stock</span>.</p>`,
+    vocab:[
+      {en:'arbitrage',ph:'/ˈɑːrbɪtrɑːʒ/',zh:'套利'},
+      {en:'price discrepancy',ph:'/praɪs dɪˈskrepənsi/',zh:'價差'},
+      {en:'CB arbitrage',ph:'/siː biː ˈɑːrbɪtrɑːʒ/',zh:'可轉債套利'},
+      {en:'long / short',ph:'/lɒŋ / ʃɔːrt/',zh:'做多 / 放空'},
+    ],
+    quiz:[
+      {q:'Arbitrage 的核心定義是？',opts:['長期持有優質資產','同時買賣賺取價差','分散投資降低風險','追蹤指數報酬'],ans:1},
+      {q:'CB arbitrage 的基本操作是？',opts:['只做多可轉債','做多CB同時放空正股','只放空正股','持有CB到期'],ans:1},
+      {q:'"Price discrepancy" 的意思是？',opts:['價格穩定','流動性差異','市場價差','費用差異'],ans:2},
+    ],
+    grammar:[
+      {tag:'同時動作',title:'simultaneous purchase and sale（同時性表達）',desc:'"Simultaneous" 是描述套利的關鍵詞，強調「同時」買賣才能鎖定無風險利潤。相關詞：concurrently、at the same time、in tandem。',ex:'The fund simultaneously purchased futures and sold spot positions to lock in the spread.'},
+    ],
+    speaking:`用英文解釋可轉債套利策略：
+"CB arbitrage works by..."
+"The risk in this strategy is..."
+"In Taiwan's CB market, the typical arbitrage opportunity arises when..."`,
+  }
 };
 
 const flashcards = {
