@@ -198,7 +198,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .r-meta{display:flex;gap:8px;align-items:center;margin:9px 0 18px;}
 .r-chap{display:flex;align-items:center;gap:8px;margin-bottom:12px;}
 .r-chap-lbl{font-size:11px;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.8px;}
-.chap-play{width:27px;height:27px;background:var(--teal);border:none;border-radius:50%;color:white;font-size:10px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+.chap-play{background:var(--teal);border:none;border-radius:20px;color:white;font-size:12px;font-weight:600;padding:5px 12px;cursor:pointer;display:flex;align-items:center;gap:4px;}
 .r-text{font-size:18px;line-height:2;color:var(--ink);}
 .r-text p{margin-bottom:20px;}
 .hl{background:var(--teal);color:white;border-radius:4px;padding:1px 5px;cursor:pointer;transition:all .15s;display:inline;}
@@ -264,7 +264,7 @@ body{font-family:-apple-system,'PingFang TC','Helvetica Neue',sans-serif;backgro
 .reader-bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:100%;max-width:480px;background:white;padding:10px 16px 26px;border-top:1px solid #eef0f3;z-index:302;}
 .rb-row{display:flex;gap:9px;}
 .rb-main{flex:2;background:linear-gradient(135deg,var(--navy),var(--teal));color:white;border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:700;cursor:pointer;}
-.rb-audio{flex:1;background:var(--bg);border:none;border-radius:13px;padding:14px;font-size:11px;font-weight:600;color:var(--slate);cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
+.rb-audio{flex:1;background:var(--teal);border:none;border-radius:13px;padding:14px;font-size:14px;font-weight:600;color:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:6px;}
 .ap-icon{width:21px;height:21px;background:var(--teal);border-radius:50%;display:flex;align-items:center;justify-content:center;color:white;font-size:9px;flex-shrink:0;}
 
 /* WORD POPUP */
@@ -1047,7 +1047,7 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div class="reader-body-wrap">
     <div class="r-title" id="rTitle"></div>
     <div class="r-meta" id="rMeta"></div>
-    <div class="r-chap"><span class="r-chap-lbl">章節 1</span><button class="chap-play">▶</button></div>
+    <div class="r-chap"><span class="r-chap-lbl">章節 1</span><button class="chap-play" id="chapPlayBtn" onclick="speakArticle()">▶ 朗讀</button></div>
     <div class="r-text" id="rBody"></div>
   </div>
 
@@ -1067,7 +1067,7 @@ I also hope to contribute to the growth of the wealth management team, potential
   <div class="reader-bottom">
     <div class="rb-row">
       <button class="rb-main">閱讀更多章節</button>
-      <button class="rb-audio"><div class="ap-icon">▶</div>朗讀</button>
+      <button class="rb-audio" id="rbAudioBtn" onclick="speakArticle()">🔊 朗讀全文</button>
     </div>
   </div>
 </div>
@@ -2077,8 +2077,14 @@ function stopSpeech() {
 function updateAudioUI(playing) {
   const chapBtn = document.getElementById('chapPlayBtn');
   const rbBtn   = document.getElementById('rbAudioBtn');
-  if (chapBtn) { chapBtn.textContent = playing ? '⏹ 停止' : '▶ 朗讀'; }
-  if (rbBtn)   { rbBtn.textContent   = playing ? '⏹ 停止' : '🔊 朗讀全文'; }
+  if (chapBtn) {
+    chapBtn.textContent = playing ? '⏹ 停止' : '▶ 朗讀';
+    chapBtn.onclick = playing ? stopSpeech : speakArticle;
+  }
+  if (rbBtn) {
+    rbBtn.textContent = playing ? '⏹ 停止朗讀' : '🔊 朗讀全文';
+    rbBtn.onclick = playing ? stopSpeech : speakArticle;
+  }
 }
 
 function speakArticle() {
