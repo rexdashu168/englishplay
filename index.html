@@ -111,6 +111,12 @@ input[type=file]{display:none;}
 .sub-speak-btn { font-size:15px; cursor:pointer; user-select:none; padding:2px 6px; border-radius:4px; border:1px solid rgba(255,183,71,0.22); opacity:0.55; transition:all 0.2s; line-height:1.4; }
 .sub-speak-btn:hover { opacity:1; border-color:rgba(255,183,71,0.5); }
 .sub-speak-btn.speaking { opacity:1; }
+.sub-speak-btn.cached { border-color:rgba(100,220,120,0.5); }
+.sub-dl-btn { font-size:15px; cursor:pointer; user-select:none; padding:2px 6px; border-radius:4px; border:1px solid rgba(100,220,120,0.4); opacity:0.7; transition:all 0.2s; line-height:1.4; }
+.sub-dl-btn:hover { opacity:1; border-color:rgba(100,220,120,0.8); }
+/* 快取標示：🔊右上角小綠點 */
+.sub-mic-wrap { position:relative; }
+.cache-dot { display:none; position:absolute; top:-2px; right:-2px; width:8px; height:8px; background:#4CAF50; border-radius:50%; border:1.5px solid rgba(38,24,8,0.88); }
 .footer{padding-top:9px;border-top:1.5px dashed rgba(180,140,60,0.28);display:flex;flex-direction:column;align-items:center;gap:4px;}
 .slogan{font-family:‘Noto Serif TC’,serif;font-size:13px;font-weight:700;color:var(–orange);letter-spacing:3px;display:flex;align-items:center;gap:8px;}
 .slogan::before,.slogan::after{content:’’;display:inline-block;width:18px;height:1px;background:var(–orange2);}
@@ -202,6 +208,7 @@ input[type=file]{display:none;}
     <div class="subtitle-bar">
       <div class="sub-mic-wrap">
         <div class="sub-icon" id="subIcon">🎙️</div>
+        <div class="cache-dot" id="cacheDot"></div>
         <div class="wave-bars" id="waveBars">
           <div class="wave-bar"></div>
           <div class="wave-bar"></div>
@@ -214,6 +221,7 @@ input[type=file]{display:none;}
       <div class="sub-btns">
         <div class="sub-play-btn" id="subPlayBtn" onclick="toggleSub()">▶ 播放</div>
         <div class="sub-speak-btn" id="subSpeakBtn" onclick="toggleSpeak()">🔊</div>
+        <div class="sub-dl-btn" id="subDlBtn" onclick="downloadAudio()" style="display:none">⬇️</div>
       </div>
     </div>
     <div class="footer">
@@ -396,6 +404,10 @@ function goPage(i){
 function renderPage(i){
   const p=DB[curSeries][i]; if(!p)return;
   const m=SERIES_META[curSeries]||{color:'#888'};
+
+  // 更新當前頁面id（供朗讀快取和下載用）
+  curAudioId = p.id;
+
   document.getElementById('idPill').textContent=p.id;
   document.getElementById('idPill').style.background=m.color;
   document.getElementById('wk').textContent=p.wk;
@@ -441,12 +453,11 @@ function showSub(text){
   subFull=text; subIdx=0; subPlaying=false;
   clearInterval(subTimer);
   document.getElementById('subPlayBtn').textContent='▶ 播放';
-
-  // 初始字幕區清空，只顯示游標
   const el=document.getElementById('subText');
   el.innerHTML='<span class="sub-cursor" id="subCursor"></span>';
-
   stopSpeak();
+  // 更新快取狀態UI
+  if(typeof updateCacheUI === 'function') updateCacheUI(curAudioId);
 }
 
 /* ── ▶播放：逐字出現（暗→亮） ── */
@@ -493,85 +504,140 @@ function setWave(on){
   else  { wb.classList.remove('active'); mic.classList.remove('speaking'); }
 }
 
-/* ── 🔊朗讀：ElevenLabs API ── */
+/* ── 🔊朗讀：ElevenLabs API ＋ 快取 ＋ 下載 ── */
 const EL_API_KEY = 'sk_be45acb62f40b8917a21bce31a921b2a352815ca3cfae3d5';
-const EL_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'; // George - 溫暖男聲，中文效果好
+const EL_VOICE_ID = 'WuLq5z7nEcrhppO0ZQJw'; // Martin Li - 中年男聲
 const EL_MODEL = 'eleven_multilingual_v2';
 
-let speaking=false, elAudio=null;
+// 快取：key = 頁面id，value = { blob, url }
+const audioCache = new Map();
+
+let speaking=false, elAudio=null, charTimer=null;
+let curAudioId = ''; // 目前播放的頁面id，供下載用
 
 function stopSpeak(){
   if(elAudio){ elAudio.pause(); elAudio=null; }
+  clearInterval(charTimer); charTimer=null;
   speaking=false;
   const btn=document.getElementById('subSpeakBtn');
   if(btn){ btn.textContent='🔊'; btn.classList.remove('speaking'); }
   setWave(false);
 }
 
+function updateCacheUI(pageId){
+  const hasCached = audioCache.has(pageId);
+  // 綠點：有快取就顯示
+  const dot = document.getElementById('cacheDot');
+  if(dot) dot.style.display = hasCached ? 'block' : 'none';
+  // 下載按鈕：有快取才顯示
+  const dlBtn = document.getElementById('subDlBtn');
+  if(dlBtn) dlBtn.style.display = hasCached ? 'block' : 'none';
+  // 🔊按鈕邊框變綠：表示已有快取不會再消耗額度
+  const speakBtn = document.getElementById('subSpeakBtn');
+  if(speakBtn){
+    if(hasCached) speakBtn.classList.add('cached');
+    else speakBtn.classList.remove('cached');
+  }
+}
+
+function downloadAudio(){
+  const cache = audioCache.get(curAudioId);
+  if(!cache) return;
+  const a = document.createElement('a');
+  a.href = cache.url;
+  a.download = `168投資小百科_${curAudioId}.mp3`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
 async function toggleSpeak(){
   const btn=document.getElementById('subSpeakBtn');
   if(speaking){ stopSpeak(); return; }
 
-  // 停止逐字播放
   clearInterval(subTimer); subPlaying=false;
   document.getElementById('subPlayBtn').textContent='▶ 播放';
 
-  // 清空字幕
   const el=document.getElementById('subText');
   el.innerHTML='<span class="sub-cursor" id="subCursor"></span>';
   let charIdx=0;
 
-  // 按鈕改成載入中
-  btn.textContent='⏳';
-  btn.classList.add('speaking');
+  // 取得當前頁面id
+  const pageId = curAudioId;
 
-  try{
-    const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${EL_VOICE_ID}`,{
-      method:'POST',
-      headers:{
-        'xi-api-key': EL_API_KEY,
-        'Content-Type':'application/json'
-      },
-      body:JSON.stringify({
-        text: subFull,
-        model_id: EL_MODEL,
-        voice_settings:{ stability:0.5, similarity_boost:0.75, speed:0.95 }
-      })
-    });
+  // 檢查快取
+  let audioUrl = '';
+  let audioDuration = 0;
 
-    if(!res.ok) throw new Error('API錯誤 '+res.status);
+  if(audioCache.has(pageId)){
+    // 有快取，直接用，不消耗額度
+    audioUrl = audioCache.get(pageId).url;
+    btn.textContent='⏳';
+    btn.classList.add('speaking');
+  } else {
+    // 沒快取，呼叫API
+    btn.textContent='⏳';
+    btn.classList.add('speaking');
 
-    const blob=await res.blob();
-    const url=URL.createObjectURL(blob);
-    elAudio=new Audio(url);
+    try{
+      const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${EL_VOICE_ID}`,{
+        method:'POST',
+        headers:{ 'xi-api-key': EL_API_KEY, 'Content-Type':'application/json' },
+        body:JSON.stringify({
+          text: subFull,
+          model_id: EL_MODEL,
+          voice_settings:{ stability:0.55, similarity_boost:0.75, speed:0.9 }
+        })
+      });
+      if(!res.ok) throw new Error('API錯誤 '+res.status);
 
-    // 音訊播放中：同步字幕逐字出現
+      const blob = await res.blob();
+      audioUrl = URL.createObjectURL(blob);
+
+      // 存入快取
+      audioCache.set(pageId, { blob, url: audioUrl });
+      updateCacheUI(pageId);
+
+    } catch(e){
+      stopSpeak();
+      alert('朗讀失敗：'+e.message);
+      return;
+    }
+  }
+
+  elAudio = new Audio(audioUrl);
+
+  elAudio.onloadedmetadata=()=>{
+    const duration = elAudio.duration;
+    const totalChars = subFull.length;
+    const msPerChar = (duration * 1000) / totalChars * 0.98;
+
     elAudio.onplay=()=>{
       speaking=true;
       btn.textContent='⏹';
       setWave(true);
-      // 用音訊duration計算每字間隔
-      const duration=elAudio.duration||6;
-      const delay=(duration*1000)/subFull.length;
-      const cursor=document.getElementById('subCursor');
-      const charTimer=setInterval(()=>{
-        if(charIdx<subFull.length && elAudio && !elAudio.paused){
+      charIdx=0;
+      clearInterval(charTimer);
+      charTimer=setInterval(()=>{
+        if(charIdx < totalChars){
+          const cursor=document.getElementById('subCursor');
           const span=document.createElement('span');
           span.className='sub-char lit';
           span.textContent=subFull[charIdx];
           if(cursor) cursor.before(span);
           charIdx++;
-        } else if(charIdx>=subFull.length){
+        } else {
           clearInterval(charTimer);
+          const cursor=document.getElementById('subCursor');
           if(cursor) cursor.style.display='none';
         }
-      }, delay);
+      }, msPerChar);
     };
 
     elAudio.onended=()=>{
-      // 補齊剩餘字幕
+      clearInterval(charTimer);
       const cursor=document.getElementById('subCursor');
-      while(charIdx<subFull.length){
+      while(charIdx<totalChars){
         const span=document.createElement('span');
         span.className='sub-char lit';
         span.textContent=subFull[charIdx++];
@@ -580,15 +646,10 @@ async function toggleSpeak(){
       if(cursor) cursor.style.display='none';
       stopSpeak();
     };
-
-    elAudio.onerror=()=>{ stopSpeak(); alert('音訊播放失敗'); };
+    elAudio.onerror=()=>{ stopSpeak(); };
     elAudio.play();
-
-  } catch(e){
-    stopSpeak();
-    console.error(e);
-    alert('朗讀失敗，請確認網路連線：'+e.message);
-  }
+  };
+  elAudio.onerror=()=>{ stopSpeak(); alert('音訊載入失敗'); };
 }
 function loadImg(e){
   const f=e.target.files[0];if(!f)return;
