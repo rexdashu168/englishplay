@@ -254,31 +254,10 @@ const SERIES_META = {
 let DB = {}, curSeries = '', curPage = 0;
 let subTimer=null, subPlaying=false, subIdx=0, subFull='';
 
-/* ── CSV解析 ── */
-function parseCSV(text) {
-  const lines = text.trim().split('\n');
-  const headers = lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
-  return lines.slice(1).filter(l=>l.trim()).map(line=>{
-    const cols=[]; let inQ=false, cur='';
-    for(const ch of line){
-      if(ch==='"'){inQ=!inQ;}
-      else if(ch===','&&!inQ){cols.push(cur.trim().replace(/^"|"$/g,''));cur='';}
-      else{cur+=ch;}
-    }
-    cols.push(cur.trim().replace(/^"|"$/g,''));
-    const obj={};
-    headers.forEach((h,i)=>obj[h]=cols[i]||'');
-    return obj;
-  });
-}
-
-/* ══════════════════════════════════════
-   設定：GitHub CSV連結
-   把YOUR_USERNAME和YOUR_REPO換成您的帳號和repo名稱
-   ══════════════════════════════════════ */
+/* ══ 資料來源：讀取同repo的168.csv ══ */
 const CSV_URL = '168.csv';
 
-/* ── CSV解析 ── */
+/* ── CSV解析（含subseries自動提取）── */
 function parseCSV(text){
   const lines=text.trim().split('\n');
   const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
@@ -292,7 +271,6 @@ function parseCSV(text){
     cols.push(cur.trim().replace(/^"|"$/g,''));
     const obj={};
     headers.forEach((h,i)=>obj[h]=cols[i]||'');
-    // subseries從wk欄位自動提取（格式：大標題・系列名稱）
     if(!obj.subseries){
       const wk=obj.wk||'';
       const idx=wk.indexOf('・');
@@ -305,11 +283,14 @@ function parseCSV(text){
 /* ── 載入資料 ── */
 async function loadData(){
   try{
-    const res=await fetch(CSV_URL);
-    if(!res.ok) throw new Error('無法讀取CSV：'+res.status);
-    const rows=parseCSV(await res.text());
+    const res=await fetch(CSV_URL, {cache:'no-cache'});
+    if(!res.ok) throw new Error('HTTP '+res.status);
+    const text=await res.text();
+    const rows=parseCSV(text);
+    if(!rows.length) throw new Error('CSV是空的');
     DB={};
     rows.forEach(r=>{
+      if(!r.series) return;
       if(!DB[r.series])DB[r.series]=[];
       DB[r.series].push(r);
     });
@@ -317,10 +298,7 @@ async function loadData(){
   }catch(e){
     document.getElementById('loading').innerHTML=
       `<div style="color:#C0392B;font-size:13px;padding:32px;text-align:center;width:390px">
-        ⚠️ 資料載入失敗<br>
-        <small style="color:#999;margin-top:8px;display:block">
-          請確認 GitHub CSV 連結是否正確<br>${e.message}
-        </small>
+        ⚠️ 載入失敗：${e.message}
       </div>`;
   }
 }
