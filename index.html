@@ -506,7 +506,12 @@ function setWave(on){
 
 /* ── 🔊朗讀：ElevenLabs API ＋ 快取 ＋ 下載 ── */
 const EL_API_KEY = 'sk_be45acb62f40b8917a21bce31a921b2a352815ca3cfae3d5';
-const EL_VOICE_ID = '5mZxJZhSmJTjL7GoYfYI'; // Karo Yang - 年輕亞洲男聲，音調自然偏高，適合教學
+// ElevenLabs 官方預設男聲（一定可用）
+// Charlie: pNInz6obpgDQGcFmaJgB - 自然對話，偏年輕，適合教學
+// Liam:    TX3LPaxmHKxFdv7VOQHJ - 清晰明亮，偏播報風格
+// Eric:    cjVigY5qzO86Huf0OWal - 親切友善，偏中音
+// Chris:   iP95p4xoKVk53GoZ742B - 沉穩專業
+const EL_VOICE_ID = 'TX3LPaxmHKxFdv7VOQHJ'; // Liam - 清晰明亮男聲，偏播報風格，適合教學
 const EL_MODEL = 'eleven_multilingual_v2';
 
 // 快取：key = 頁面id，value = { blob, url }
