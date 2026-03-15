@@ -493,107 +493,101 @@ function setWave(on){
   else  { wb.classList.remove('active'); mic.classList.remove('speaking'); }
 }
 
-/* ── 🔊朗讀：語音＋字幕用onboundary精準同步 ── */
-let speaking=false, speakCharIdx=0;
+/* ── 🔊朗讀：ElevenLabs API ── */
+const EL_API_KEY = 'sk_be45acb62f40b8917a21bce31a921b2a352815ca3cfae3d5';
+const EL_VOICE_ID = 'JBFqnCBsd6RMkjVDRZzb'; // George - 溫暖男聲，中文效果好
+const EL_MODEL = 'eleven_multilingual_v2';
+
+let speaking=false, elAudio=null;
 
 function stopSpeak(){
-  if(speaking || window.speechSynthesis?.speaking){
-    window.speechSynthesis && window.speechSynthesis.cancel();
-  }
+  if(elAudio){ elAudio.pause(); elAudio=null; }
   speaking=false;
   const btn=document.getElementById('subSpeakBtn');
   if(btn){ btn.textContent='🔊'; btn.classList.remove('speaking'); }
   setWave(false);
 }
 
-function toggleSpeak(){
+async function toggleSpeak(){
   const btn=document.getElementById('subSpeakBtn');
-  if(!('speechSynthesis' in window)){
-    alert('您的瀏覽器不支援語音朗讀，建議使用Chrome或Safari。');
-    return;
-  }
-  if(speaking){
-    stopSpeak();
-    return;
-  }
+  if(speaking){ stopSpeak(); return; }
 
   // 停止逐字播放
   clearInterval(subTimer); subPlaying=false;
   document.getElementById('subPlayBtn').textContent='▶ 播放';
 
-  // 清空字幕，等語音帶著出現
+  // 清空字幕
   const el=document.getElementById('subText');
   el.innerHTML='<span class="sub-cursor" id="subCursor"></span>';
-  speakCharIdx=0;
+  let charIdx=0;
 
-  window.speechSynthesis.cancel();
-  const utter=new SpeechSynthesisUtterance(subFull);
-  utter.lang='zh-TW';
-  utter.rate=0.92;
-  utter.pitch=1.0;
+  // 按鈕改成載入中
+  btn.textContent='⏳';
+  btn.classList.add('speaking');
 
-  // 選中文語音
-  const loadAndSpeak=()=>{
-    const voices=window.speechSynthesis.getVoices();
-    const zhVoice=voices.find(v=>v.lang==='zh-TW')||voices.find(v=>v.lang.startsWith('zh'));
-    if(zhVoice) utter.voice=zhVoice;
+  try{
+    const res=await fetch(`https://api.elevenlabs.io/v1/text-to-speech/${EL_VOICE_ID}`,{
+      method:'POST',
+      headers:{
+        'xi-api-key': EL_API_KEY,
+        'Content-Type':'application/json'
+      },
+      body:JSON.stringify({
+        text: subFull,
+        model_id: EL_MODEL,
+        voice_settings:{ stability:0.5, similarity_boost:0.75, speed:0.95 }
+      })
+    });
 
-    utter.onstart=()=>{
+    if(!res.ok) throw new Error('API錯誤 '+res.status);
+
+    const blob=await res.blob();
+    const url=URL.createObjectURL(blob);
+    elAudio=new Audio(url);
+
+    // 音訊播放中：同步字幕逐字出現
+    elAudio.onplay=()=>{
       speaking=true;
       btn.textContent='⏹';
-      btn.classList.add('speaking');
       setWave(true);
-    };
-
-    // onboundary：每次語音到達字詞邊界時觸發
-    // charIndex是當前朗讀到的字元位置
-    utter.onboundary=(e)=>{
-      if(e.name==='word'||e.name==='sentence'){
-        const targetIdx=e.charIndex+e.charLength;
-        // 把speakCharIdx追上到targetIdx
-        const cursor=document.getElementById('subCursor');
-        while(speakCharIdx<targetIdx && speakCharIdx<subFull.length){
+      // 用音訊duration計算每字間隔
+      const duration=elAudio.duration||6;
+      const delay=(duration*1000)/subFull.length;
+      const cursor=document.getElementById('subCursor');
+      const charTimer=setInterval(()=>{
+        if(charIdx<subFull.length && elAudio && !elAudio.paused){
           const span=document.createElement('span');
           span.className='sub-char lit';
-          span.textContent=subFull[speakCharIdx];
+          span.textContent=subFull[charIdx];
           if(cursor) cursor.before(span);
-          speakCharIdx++;
+          charIdx++;
+        } else if(charIdx>=subFull.length){
+          clearInterval(charTimer);
+          if(cursor) cursor.style.display='none';
         }
-      }
+      }, delay);
     };
 
-    utter.onend=()=>{
-      // 語音結束，補齊剩餘字幕
+    elAudio.onended=()=>{
+      // 補齊剩餘字幕
       const cursor=document.getElementById('subCursor');
-      while(speakCharIdx<subFull.length){
+      while(charIdx<subFull.length){
         const span=document.createElement('span');
         span.className='sub-char lit';
-        span.textContent=subFull[speakCharIdx];
+        span.textContent=subFull[charIdx++];
         if(cursor) cursor.before(span);
-        speakCharIdx++;
       }
       if(cursor) cursor.style.display='none';
-      speaking=false;
-      btn.textContent='🔊';
-      btn.classList.remove('speaking');
-      setWave(false);
+      stopSpeak();
     };
 
-    utter.onerror=()=>{
-      speaking=false;
-      btn.textContent='🔊';
-      btn.classList.remove('speaking');
-      setWave(false);
-    };
+    elAudio.onerror=()=>{ stopSpeak(); alert('音訊播放失敗'); };
+    elAudio.play();
 
-    window.speechSynthesis.speak(utter);
-  };
-
-  // 確保voices已載入
-  if(window.speechSynthesis.getVoices().length>0){
-    loadAndSpeak();
-  } else {
-    window.speechSynthesis.onvoiceschanged=()=>{ loadAndSpeak(); };
+  } catch(e){
+    stopSpeak();
+    console.error(e);
+    alert('朗讀失敗，請確認網路連線：'+e.message);
   }
 }
 function loadImg(e){
