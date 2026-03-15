@@ -273,29 +273,56 @@ function parseCSV(text) {
 }
 
 /* ══════════════════════════════════════
-   模擬版：資料直接內嵌
-   未來切換GitHub版時，把這段換回 loadData()
+   設定：GitHub CSV連結
+   把YOUR_USERNAME和YOUR_REPO換成您的帳號和repo名稱
    ══════════════════════════════════════ */
-function loadData(){
-  const rows = [
-    {series:'STOCK',id:'STOCK-001',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'股票',zh_hl:'股票',en:'Stock / Share',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'📊',d2:'💰',d3:'🏢',d4:'⚠️',g1:'持有公司的<b>所有權憑證</b>',g2:'公司賺錢你分紅，虧損你承擔',g3a:'台積電股本',g3a_num1:'2,593億',g3a_num2:'',g3b:'= 發行',g3b_num1:'259億',g3b_num2:'張股票',g4:'股價會漲也會跌，<b>沒有底線保護</b>',key:'買股票就是買公司一部份・漲跌都是你的',sub:'股票是持有一家公司所有權的憑證。公司賺錢你分紅，公司虧錢你也要承擔。買股票不只是在追數字，你是真正的股東，公司的好壞和你直接相關。'},
-    {series:'STOCK',id:'STOCK-002',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'股份',zh_hl:'股份',en:'Share',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'🍕',d2:'👥',d3:'📐',d4:'⚠️',g1:'公司所有權切成<b>無數等份</b>，每份一股',g2:'持有越多股份，擁有公司<b>比例越高</b>',g3a:'公司切成',g3a_num1:'1億',g3a_num2:'股',g3b:'你買',g3b_num1:'1萬',g3b_num2:'股 = 0.01%',g4:'股份多不代表<b>實際控制權</b>，要過半才算',key:'公司像披薩・股份就是切開的每一片',sub:'股份就是把公司所有權切成無數等份，每一份叫做一股。你買越多股份，擁有這家公司的比例就越高。就像披薩切成100片，你買了1片，你就擁有這塊披薩的1%。'},
-    {series:'STOCK',id:'STOCK-003',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'股本',zh_hl:'股本',en:'Capital Stock',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'🏗️',d2:'📦',d3:'🔢',d4:'⚠️',g1:'公司發行所有股票的<b>總面額金額</b>',g2:'股本越大EPS越難拉高，<b>股價越難漲</b>',g3a:'股本',g3a_num1:'10億元',g3a_num2:'',g3b:'= 發行',g3b_num1:'1億',g3b_num2:'股（面額10元）',g4:'股本膨脹稀釋EPS，<b>不是越大越好</b>',key:'股本是發行規模・台灣每股面額固定10元',sub:'股本是公司發行所有股票的總面額金額。台灣股票每股面額固定10元，股本10億元就代表發行了1億股。股本越大，每股盈餘就越難提高，股價也越難大漲。'},
-    {series:'STOCK',id:'STOCK-004',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'股票面額',zh_hl:'面額',en:'Par Value',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'🏷️',d2:'📏',d3:'💲',d4:'⚠️',g1:'股票發行的<b>票面金額</b>，台灣固定10元',g2:'面額和市價無關，<b>市價可遠高於面額</b>',g3a:'面額',g3a_num1:'10元',g3a_num2:'',g3b:'市價可能',g3b_num1:'500元',g3b_num2:'或 8元',g4:'面額只是<b>計算股本用的</b>，不代表真實價值',key:'面額10元是固定的・市價是市場決定的',sub:'台灣股票的面額統一是10元，這是計算股本用的基準，和股票的市場價格完全無關。市價可能是500元，也可能是8元。面額不代表股票的真實價值，千萬不要混淆。'},
-    {series:'STOCK',id:'STOCK-005',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'市值',zh_hl:'市值',en:'Market Cap',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'🌍',d2:'💹',d3:'🔢',d4:'⚠️',g1:'股價乘以總股數，是<b>市場對公司的估值</b>',g2:'市值越大，公司在市場眼中<b>越有份量</b>',g3a:'股價',g3a_num1:'100元',g3a_num2:'× 10億股',g3b:'= 市值',g3b_num1:'1,000億元',g3b_num2:'',g4:'市值高不代表公司好，<b>要看估值指標</b>',key:'市值是市場給公司的估價・每天都在變動',sub:'市值就是股價乘以總股數，代表市場現在認為這家公司值多少錢。股價100元乘以10億股，市值就是1000億元。市值每天隨股價波動，是觀察公司規模最直觀的數字。'},
-    {series:'STOCK',id:'STOCK-006',subseries:'一家公司怎麼把自己切塊賣給你',wk:'股市基礎・一家公司怎麼把自己切塊賣給你',zh:'股價',zh_hl:'股價',en:'Stock Price',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'📈',d2:'🎯',d3:'⚖️',d4:'⚠️',g1:'市場上<b>買賣雙方成交</b>的價格',g2:'反映市場對公司<b>未來獲利的預期</b>',g3a:'昨收',g3a_num1:'100元',g3a_num2:'',g3b:'今天成交',g3b_num1:'105元',g3b_num2:'→ 漲5%',g4:'短期受情緒影響，<b>長期才反映真實價值</b>',key:'股價是買賣雙方的共識・不等於真實價值',sub:'股價是市場上買賣雙方成交的價格，反映大家對這家公司未來的預期。短期股價受情緒、消息、市場氣氛影響，不一定等於公司的真實價值。長期持有，股價才會慢慢回歸基本面。'},
-    {series:'STOCK',id:'STOCK-007',subseries:'漲跌停之間，你的心在哪裡',wk:'股市基礎・漲跌停之間，你的心在哪裡',zh:'漲幅',zh_hl:'漲幅',en:'Price Increase Rate',diff:'easy',diff_icon:'🌱',diff_txt:'入門',d1:'📈',d2:'😊',d3:'🔢',d4:'⚠️',g1:'股價上漲的<b>幅度百分比</b>',g2:'漲幅越高帳面獲利越多，<b>但風險也越大</b>',g3a:'買進',g3a_num1:'100元',g3a_num2:'',g3b:'漲到',g3b_num1:'110元',g3b_num2:'漲幅 = +10%',g4:'追高漲幅大的股票，<b>往往買在最高點</b>',key:'漲幅是結果・追漲是最危險的投資習慣',sub:'漲幅是股價上漲的百分比。買進100元漲到110元，漲幅就是10%。漲幅高讓人興奮，但往往這時候風險也最大。很多散戶看到漲才進場，結果買在高點，這是最常見的虧損來源。'},
-    {series:'CB',id:'CB-001',subseries:'認識這個特別的投資工具',wk:'可轉債入門・認識這個特別的投資工具',zh:'可轉換公司債',zh_hl:'公司債',en:'Convertible Bond / CB',diff:'mid',diff_icon:'🔥',diff_txt:'進階',d1:'📜',d2:'💰',d3:'🏦',d4:'🛡️',g1:'可以換成股票的<b>債券</b>',g2:'漲了換股票賺差價，沒漲到期<b>拿回本金</b>',g3a:'買一張',g3a_num1:'100元',g3a_num2:'（10萬）',g3b:'到期拿回',g3b_num1:'10萬元',g3b_num2:'',g4:'公司倒閉仍有風險，<b>非百分百保本</b>',key:'進可攻退可守・這就是可轉債最吸引人的地方',sub:'可轉換公司債，是一種可以在特定條件下換成股票的債券。漲了換股票賺差價，沒漲到期拿回本金。進可攻，退可守，這就是可轉債最吸引人的地方。'},
-    {series:'CB',id:'CB-002',subseries:'認識這個特別的投資工具',wk:'可轉債入門・認識這個特別的投資工具',zh:'雙重特性',zh_hl:'雙重',en:'Dual Nature',diff:'mid',diff_icon:'🔥',diff_txt:'進階',d1:'🔄',d2:'⚔️',d3:'🎯',d4:'🔍',g1:'同時有<b>債券保本</b>和<b>股票增值</b>特性',g2:'跌時守本金，漲時享<b>股票獲利</b>',g3a:'股票漲 →',g3a_num1:'可轉債同步上漲',g3a_num2:'',g3b:'股票跌 →',g3b_num1:'可轉債守住底線',g3b_num2:'',g4:'雙重特性是優勢，<b>不代表零風險</b>',key:'一張債券兩種選擇・這是可轉債最核心的設計',sub:'可轉債的雙重特性，是它最獨特的地方。股票漲了，可轉債跟著享受獲利；股票跌了，債券的性質讓它守住底線。一張債券，兩種選擇，這是可轉債最核心的設計。'},
-    {series:'CB',id:'CB-003',subseries:'認識這個特別的投資工具',wk:'可轉債入門・認識這個特別的投資工具',zh:'可轉債面額',zh_hl:'面額',en:'Par Value / CB',diff:'mid',diff_icon:'🔥',diff_txt:'進階',d1:'🏷️',d2:'📏',d3:'💲',d4:'🎚️',g1:'可轉債票面金額台灣統一<b>每張10萬元</b>',g2:'面額是到期可拿回的<b>保本基準線</b>',g3a:'報價',g3a_num1:'100元',g3a_num2:'= 10萬元',g3b:'跌到',g3b_num1:'98元',g3b_num2:'→ 低於面額',g4:'買進<b>高於面額</b>，保本效果就打折',key:'面額是保本的基準線・買進越接近面額越安全',sub:'可轉債的面額台灣統一是10萬元，也就是報價100元的基準。面額是保本的參考線，買進越接近面額，到期保本效果越好。買進高於面額，保本效果就會打折扣。'},
-    {series:'PSY',id:'PSY-001',subseries:'為什麼投資人總是輸給自己',wk:'投資心理・為什麼投資人總是輸給自己',zh:'投資心理',zh_hl:'心理',en:'Investment Psychology',diff:'hard',diff_icon:'⚡',diff_txt:'高階',d1:'🧠',d2:'😰',d3:'📉',d4:'💡',g1:'影響投資決策的<b>心理因素</b>',g2:'情緒往往比市場更早讓你<b>虧損</b>',g3a:'市場跌',g3a_num1:'10%',g3a_num2:'',g3b:'情緒跌幅可能高達',g3b_num1:'300%',g3b_num2:'',g4:'技術學再多，<b>心理沒準備好都白費</b>',key:'投資最大的敵人不是市場・是你自己',sub:'投資心理是影響投資決策最關鍵的因素。很多人技術分析學得很好，財報也看得懂，但一遇到市場波動，情緒就開始主導決策。了解自己的心理弱點，是投資進步最重要的一步。'},
-    {series:'PSY',id:'PSY-002',subseries:'貪婪讓你在高點進場',wk:'投資心理・貪婪讓你在高點進場',zh:'貪婪心理',zh_hl:'貪婪',en:'Greed',diff:'hard',diff_icon:'⚡',diff_txt:'高階',d1:'😤',d2:'📈',d3:'💸',d4:'⚠️',g1:'看到別人賺錢就急著<b>跟進</b>的心態',g2:'貪婪讓人追高，<b>往往買在最高點</b>',g3a:'股票已漲',g3a_num1:'50%',g3a_num2:'',g3b:'貪婪的人這時',g3b_num1:'才進場',g3b_num2:'',g4:'FOMO錯失恐懼是<b>貪婪最常見的表現</b>',key:'貪婪讓你在別人最興奮時買進・那往往是高點',sub:'貪婪是投資中最常見的心理陷阱。看到股票已經漲了50%，別人都在賺錢，你也忍不住想跟進。但這時往往已經接近高點了。巴菲特說，當別人貪婪時要恐懼，就是這個道理。'},
-    {series:'REX',id:'REX-001',subseries:'我的投資起點',wk:'Rex實戰・我的投資起點',zh:'融資的教訓',zh_hl:'教訓',en:"Rex's Lesson",diff:'hard',diff_icon:'⚡',diff_txt:'高階',d1:'😱',d2:'💸',d3:'📉',d4:'💪',g1:'融資是<b>放大獲利也放大虧損</b>的工具',g2:'用融資追漲，崩盤時損失<b>遠超預期</b>',g3a:'融資買',g3a_num1:'100萬',g3a_num2:'',g3b:'跌30%可能損失',g3b_num1:'200萬',g3b_num2:'',g4:'我用慘痛代價學到：<b>風控永遠優先</b>',key:'融資是雙面刃・賺快也可以賠得精光',sub:'融資曾經是我投資生涯最慘痛的教訓。放大槓桿讓我以為可以快速致富，但市場崩跌的時候，損失的速度遠超過你的想像。那次經歷讓我深刻理解，風險控制永遠比追求報酬更重要。'},
-    {series:'REX',id:'REX-002',subseries:'為什麼我選擇可轉債',wk:'Rex實戰・為什麼我選擇可轉債',zh:'選擇可轉債',zh_hl:'可轉債',en:'Why CB',diff:'hard',diff_icon:'⚡',diff_txt:'高階',d1:'🔄',d2:'🛡️',d3:'💡',d4:'✅',g1:'融資慘痛後，尋找<b>風險有限的工具</b>',g2:'可轉債讓我參與市場，<b>又有底線保護</b>',g3a:'最壞情況 →',g3a_num1:'拿回10萬元',g3a_num2:'',g3b:'最好情況 →',g3b_num1:'數倍獲利',g3b_num2:'',g4:'不是最刺激的工具，<b>但讓我睡得著</b>',key:'好的投資工具讓你在市場活得久・不是賺得快',sub:'融資的教訓讓我開始尋找風險有限、但仍能參與市場的工具。可轉債就是答案。最壞的情況拿回本金，最好的情況享受股票上漲的獲利。它不是最刺激的工具，但讓我可以安心持有，這才是長期投資的基礎。'}
-  ];
-  DB={};
-  rows.forEach(r=>{if(!DB[r.series])DB[r.series]=[];DB[r.series].push(r);});
-  init();
+const CSV_URL = 'https://raw.githubusercontent.com/YOUR_USERNAME/YOUR_REPO/main/168.csv';
+
+/* ── CSV解析 ── */
+function parseCSV(text){
+  const lines=text.trim().split('\n');
+  const headers=lines[0].split(',').map(h=>h.trim().replace(/^"|"$/g,''));
+  return lines.slice(1).filter(l=>l.trim()).map(line=>{
+    const cols=[]; let inQ=false, cur='';
+    for(const ch of line){
+      if(ch==='"'){inQ=!inQ;}
+      else if(ch===','&&!inQ){cols.push(cur.trim().replace(/^"|"$/g,''));cur='';}
+      else{cur+=ch;}
+    }
+    cols.push(cur.trim().replace(/^"|"$/g,''));
+    const obj={};
+    headers.forEach((h,i)=>obj[h]=cols[i]||'');
+    // subseries從wk欄位自動提取（格式：大標題・系列名稱）
+    if(!obj.subseries){
+      const wk=obj.wk||'';
+      const idx=wk.indexOf('・');
+      obj.subseries=idx>=0?wk.substring(idx+1):wk;
+    }
+    return obj;
+  });
+}
+
+/* ── 載入資料 ── */
+async function loadData(){
+  try{
+    const res=await fetch(CSV_URL);
+    if(!res.ok) throw new Error('無法讀取CSV：'+res.status);
+    const rows=parseCSV(await res.text());
+    DB={};
+    rows.forEach(r=>{
+      if(!DB[r.series])DB[r.series]=[];
+      DB[r.series].push(r);
+    });
+    init();
+  }catch(e){
+    document.getElementById('loading').innerHTML=
+      `<div style="color:#C0392B;font-size:13px;padding:32px;text-align:center;width:390px">
+        ⚠️ 資料載入失敗<br>
+        <small style="color:#999;margin-top:8px;display:block">
+          請確認 GitHub CSV 連結是否正確<br>${e.message}
+        </small>
+      </div>`;
+  }
 }
 
 /* ── 初始化 ── */
